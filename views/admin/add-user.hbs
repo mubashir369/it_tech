@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="/stylesheets/admin.css">
+<style>
+    label {
+        color: white;
+    }
+</style>
+<div class="container tm-mt-big tm-mb-big">
+    <div class="row">
+        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="tm-block-title d-inline-block">Add User</h2>
+                    </div>
+                </div>
+                 <form action="/admin/add-user" method="POST" id="addUser" class="tm-edit-product-form"
+                            enctype="multipart/form-data">
+                <div class="row tm-edit-product-row">
+                    {{#if message}}
+				<div class="alert alert-warning alert-dismissible fade show mb-3">
+					<strong>Error!</strong> {{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+
+				{{/if}}
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                        
+                       
+                            <div class="form-group mb-3">
+                                <label >Username
+                                </label>
+                                <input  name="name" type="text" class="form-control " required />
+                                <div class="form-group mb-3 mt-3">
+                                    <label >First Name
+                                    </label>
+                                    <input  name="fname" type="text" class="form-control " required />
+                                </div>
+                                <div class="form-group mb-3 mt-3">
+                                    <label >Last Name
+                                    </label>
+                                    <input  name="lname" type="text" class="form-control " required />
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+                        <div class="form-group mb-3 ">
+                            <label>Email
+                            </label>
+                            <input  name="email" type="email" class="form-control"  />
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label >Phone Number
+                            </label>
+                            <input id="num" name="number" type="text" class="form-control "  />
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label >Password
+                            </label>
+                            <input name="password" type="password" class="form-control " required />
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary btn-block text-uppercase mt-5">Add User
+                            Now</button>
+
+                       
+                       
+                    </div>
+                     {{#if emailErr}}
+                       <script>
+                           alert("this Email Is Alredy Used please use anothor Email")
+                       </script>
+                        {{/if}}
+                         </form>
+                </div>
+            </div>
+        </div>
+    </div>

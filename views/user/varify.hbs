@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="stylesheets/signup.css">
+
+
+<div class="main-w3layouts wrapper">
+	<h1>varify</h1>
+	<div class="main-agileinfo">
+		<div class="agileits-top">
+			<form action="/login" method="post">
+            <input type="hidden" name="id" value="{{id}}">
+				<input class="text" type="text" name="token" placeholder="Username" required="">
+				
+
+
+				<div class="wthree-text">
+
+					<div class="clear"> </div>
+				</div>
+				{{#if loginErr}}
+				<div class="alert alert-warning alert-dismissible fade show">
+					<strong>Error!</strong> {{loginErr}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+				{{/if}}
+				<input type="submit" value="SIGNUP">
+			</form>
+			<p><a href="/signup"> Register for a new account</a></p>
+		</div>
+	</div>

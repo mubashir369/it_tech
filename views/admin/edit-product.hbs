@@ -1,0 +1,128 @@
+<style>
+  label {
+    color: white;
+  }
+</style>
+<link rel="stylesheet" href="/stylesheets/admin.css">
+
+<div class="container tm-mt-big tm-mb-big">
+  <div class="row">
+    <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+      <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="tm-block-title d-inline-block">Edit Product</h2>
+          </div>
+        </div>
+        <div class="row tm-edit-product-row">
+          <div class="col-xl-6 col-lg-6 col-md-12">
+            <form action="/admin/edit-product/{{product._id}}" method="POST" class="tm-edit-product-form" enctype="multipart/form-data">
+              <div class="form-group mb-3">
+                <label for="name">Product Name
+                </label>
+                <input id="name" value="{{product.name}}" name="name" type="text" class="form-control validate" required />
+                <div class="form-group mb-3 mt-3">
+                  <label for="name">Brand Name
+                  </label>
+                  <input id="name" value="{{product.brand}}" name="brand" type="text" class="form-control validate" required />
+                </div>
+
+              </div>
+              <div class="form-group mb-3">
+                <label for="description">Description</label>
+                <textarea name="discription" placeholder="" class="form-control validate" rows="3" required>{{product.discription}}</textarea>
+              </div>
+
+              <div class="row">
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="category">RAM</label>
+                  <select class="custom-select tm-select-accounts" id="category" name="ram" required>
+                    <option value="{{product.ram}}">{{product.ram}}</option>
+                    <option value="2GB">2GB</option>
+                    <option value="4GB">4GB</option>
+                    <option value="6GB">6GB</option>
+                    <option value="8GB">8GB</option>
+                    <option value="16GB">16GB</option>
+                  </select>
+                </div>
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="category">ROM</label>
+                  <select class="custom-select tm-select-accounts" required id="category" name="rom">
+                    <option value="{{product.rom}}">{{product.rom}}</option>
+                    <option value="8GB">8GB</option>
+                    <option value="16GB">16GB</option>
+                    <option value="32GB">32GB</option>
+                    <option value="64GB">64GB</option>
+                    <option value="128GB">128GB</option>
+                  </select>
+                </div>
+
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="expire_date">Price
+                  </label>
+                  <input id="expire_date" value="{{product.price}}" name="price" type="number" class="form-control validate"
+                    data-large-mode="true" required />
+                </div>
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="stock">Color
+                  </label>
+                  <input id="stock" value="{{product.color}}" name="color" type="text" class="form-control validate" required />
+                </div>
+              </div>
+
+
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+
+            <div class="custom-file mt-3 mb-3 imgs">
+
+              <label for="frontimg">
+                UPLOAD PRODUCT FRONT IMAGE
+              </label>
+
+
+              <input id="frontimg" name="fimage" type="file" onchange="viewFimage(event)" class="btn btn-block mx-auto mb-2 form-control validate"
+                value="UPLOAD PRODUCT FRONT IMAGE" />
+                <img id="viewfimage" style="width: 100px;" src="/product-image/front_{{product._id}}.jpg" alt="img">
+              <br>
+              <div>
+                <label for="sideimg">
+                  UPLOAD PRODUCT SIDE IMAGE
+
+                </label>
+
+                <input id="sideimg" name="simage" onchange="viewSimage(event)" type="file" class="btn btn-block mx-auto mb-2 form-control validate"
+                  value="UPLOAD PRODUCT SIDE IMAGE"  />
+                  <img style="width: 100px; " id="viewsimage" src="/product-image/side_{{product._id}}.jpg" alt="img"><br>
+                <label for="backimg">
+                  UPLOAD PRODUCT BACK IMAGE
+
+                </label>
+
+                <input id="backimg" name="bimage" type="file" onchange="viewBimage(event)" class="btn btn-block mx-auto mb-2 form-control validate"
+                  value="UPLOAD PRODUCT BACK IMAGE"  />
+                  <img style="width: 100px;" id="viewbimage" src="/product-image/back_{{product._id}}.jpg" alt="img">
+              </div>
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block text-uppercase mt-5">Update Product Now</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function viewFimage(event){
+      document.getElementById('viewfimage').src=URL.createObjectURL(event.target.files[0])
+    }
+    function viewSimage(event){
+      document.getElementById('viewsimage').src=URL.createObjectURL(event.target.files[0])
+    }
+    function viewBimage(event){
+      document.getElementById('viewbimage').src=URL.createObjectURL(event.target.files[0])
+    }
+  </script>

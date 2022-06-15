@@ -1,0 +1,86 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --transition-timing: 200ms;
+  }
+  
+  .login-section {
+    --slider-overlay: rgba(10, 10, 83, 0.568);
+    --color-1: rgb(24, 24, 78);
+    --color-2: rgb(127, 123, 248);
+    font-family: sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    border: none;
+    color: white;
+    padding: 1em;
+    background: linear-gradient(to right, #0e4481, #0e4481);
+    height: 100vh;
+  }
+  .login-section *::placeholder{
+    color: white;
+    text-transform: uppercase;
+  }
+  .login-section h3 {
+    text-align: center;
+    font-size: 3em;
+    margin: 1em 0;
+  }
+  .login-section form {
+    width: fit-content;
+    margin: auto;
+  }
+  .login-section form input {
+    color: white;
+    display: block;
+    padding: 1.5em;
+    margin-bottom: 1em;
+    width: 25em;
+    max-width: 30em;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: saturate(180%) blur(10px);
+    border: none;
+    outline: none;
+    backdrop-filter: blur(3em);
+  }
+  .login-section form input:focus {
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    background-color: transparent;
+  }
+  .login-section form input[type=sumbit] {
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.15);
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid currentColor;
+    transition: border var(--transition-timing) ease, background var(--transition-timing) ease, color var(--transition-timing) ease;
+  }
+  .login-section form input[type=sumbit]:hover {
+    color: white;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  .login-section p {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .login-section p a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .button-text {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 100%;
+    padding: 1em;
+    border-top: 2px solid rgba(255, 255, 255, 0.15);
+  }

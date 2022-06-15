@@ -1,0 +1,178 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+<link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
+<link rel="stylesheet" href="stylesheets/css/magnific-popup.css">
+<link rel="stylesheet" href="stylesheets/css/jquery-ui.css">
+<link rel="stylesheet" href="stylesheets/css/owl.carousel.min.css">
+<link rel="stylesheet" href="stylesheets/css/owl.theme.default.min.css">
+
+
+<link rel="stylesheet" href="stylesheets/css/aos.css">
+
+<link rel="stylesheet" href="stylesheets/css/style.css">
+
+<div class="site-wrap">
+  <div class="site-section">
+    <div class="container">
+      <div class="row mb-5">
+        <form class="col-md-12" method="post">
+          <div class="site-blocks-table">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="product-thumbnail">Image</th>
+                  <th class="product-name">Product</th>
+                  <th class="product-price">Price</th>
+                  <th class="product-quantity">Quantity</th>
+                  <th>Totel</th>
+                  <th class="product-remove">Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each products}}
+
+                <tr>
+
+                  <a href="">
+                    <td class="product-thumbnail">
+                      <img src="/product-image/front_{{product._id}}.jpg" alt="Image" class="img-fluid">
+                  </a>
+                  </td>
+                  <td class="product-name">
+                    <h2 class="h5 text-black">{{product.name}}</h2>
+                  </td>
+                  <td> <span id="price{{this.product._id}}">₹ {{product.price}}.00</span> </td>
+                  <td>
+                    <div class="input-group mb-3 ms-5" style="max-width: 120px;">
+
+                      <div class="input-group-prepend">
+                        <button class="btn btn-outline-primary js-btn-minus"
+                          onclick="changeQty('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)"
+                          type="button">&minus;</button>
+                      </div>
+
+                      <input type="text" id="{{this.product._id}}" class="form-control text-center"
+                        value="{{this.quantity}}" placeholder="" aria-label="Example text with button addon" disabled
+                        aria-describedby="button-addon1">
+
+
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-primary js-btn-plus"
+                          onclick="changeQty('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)"
+                          type="button">&plus;</button>
+                      </div>
+                    </div>
+
+                  </td>
+                  <td> <span id="refresh{{this.product._id}}">₹ {{this.totel}}.00</span> </td>
+
+                  <td><a href="/delete-cart-product/{{this.product._id}}"
+                      onclick="return confirm('Are you want to delete {{product.name}} From Cart?')"
+                      class="btn btn-primary btn-sm">X</a></td>
+
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row mb-5">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <form action="/clear-cart" method="POST">
+                <input type="text" name="usrId" value="{{user._id}}" hidden>
+                <button class="btn btn-primary btn-sm btn-block" onclick="return confirm('Are you want to Clear Your Cart?')">Clear Cart</button>
+              </form>
+
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label class="text-black h4" for="coupon">Coupon</label>
+              <p>Enter your coupon code if you have one.</p>
+            </div>
+            <div class="col-md-8 mb-3 mb-md-0">
+              <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-primary btn-sm">Apply Coupon</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 pl-5">
+          <div class="row justify-content-end">
+            <div class="col-md-7">
+              <div class="row">
+                <div class="col-md-12 text-right border-bottom mb-5">
+                  <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                </div>
+              </div>
+
+              <div class="row mb-5">
+                <div class="col-md-6">
+                  <span class="text-black"><strong> Total</strong></span>
+                </div>
+                <div class="col-md-6 text-right">
+                  <strong class="text-black">₹<span id="totel">{{totel}}</span>.00 </strong>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <form action="/place-order">
+                    <button class="btn btn-primary btn-lg py-3 btn-block"> Place Order</button>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<script src="javascripts/js/jquery-3.3.1.min.js"></script>
+<script src="javascripts/js/jquery-ui.js"></script>
+<script src="javascripts/js/popper.min.js"></script>
+<script src="javasc  alertripts/js/owl.carousel.min.js"></script>
+<script src="javascripts/js/jquery.magnific-popup.min.js"></script>
+<script src="javascripts/js/aos.js"></script>
+
+<script src="javascripts/js/main.js"></script>
+<script>
+  function changeQty(cartId, proId, usrId, count) {
+
+
+    let quantity = parseInt(document.getElementById(proId).value);
+    
+    $.ajax({
+      url: '/change-product-Qty',
+      data: {
+        user: usrId,
+        cart: cartId,
+        product: proId,
+        count: count,
+        quantity: quantity
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          alert("Product Removed From Cart")
+          location.reload()
+        } else {
+          document.getElementById(proId).value = quantity + count
+          document.getElementById('totel').innerHTML = +response.totel
+          document.getElementById('perTotel' + proId).innerHTML = price
+
+        }
+      }
+    })
+    $('#refresh' + proId).load(location.href + ' #refresh' + proId);
+  }
+</script>

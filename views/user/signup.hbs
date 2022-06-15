@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="stylesheets/signup.css">
+
+
+<div class="main-w3layouts wrapper">
+	<h1 id="head">SignUp Form</h1>
+	<div class="main-agileinfo">
+		<div class="agileits-top">
+			<form action="/signup" id="sub-form" method="POST">
+				{{#if message}}
+				<div class="alert alert-warning alert-dismissible fade show mb-3">
+					<strong>Error!</strong> {{message}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+
+				{{/if}}
+				<label for="">Username</label>
+				<input class="text" type="text" name="name" required>
+				<br>
+				<label for="">First Name</label>
+				<input class="text" type="text" name="fname" required>
+				<br>
+				<label for="">Last name</label>
+				<input class="text" type="text" name="lname" required>
+				<br>
+				<label for="">Email ID</label>
+				<input class="text" type="email" name="email" required>
+				<br>
+				<label for="">Phoen Number</label>
+				<input class="text" type="text" name="number" required>
+				<br>
+				<label for="">Password</label>
+				<input class="text" type="password" id="checkpassword" name="checkpassword" required>
+				<br>
+				<label for="">Confirm Password</label>
+				<input class="text" type="password" id="myInput" name="password" required><br>
+				<input type="checkbox" onclick="myFunction()"><span style="color:bisque;"> Show Password</span>
+
+				<div class="wthree-text">
+
+					<div class="clear"> </div>
+				</div>
+
+				<input type="submit" value="SIGNUP">
+			</form>
+			<p>Do you have an Account? <a href="/login"> Login Now!</a></p>
+		</div>
+	</div>
+
+
+	<script>
+		function myFunction() {
+			var x = document.getElementById("myInput");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
+	</script>

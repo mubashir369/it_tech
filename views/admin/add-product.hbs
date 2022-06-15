@@ -1,0 +1,116 @@
+<style>
+  .error{
+    color: red;
+  },
+  label {
+    color: white;
+  }
+</style>
+<link rel="stylesheet" href="/stylesheets/admin.css">
+<div class="container tm-mt-big tm-mb-big">
+  <div class="row">
+    <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+      <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="tm-block-title d-inline-block">Add Product</h2>
+          </div>
+        </div>
+        <div class="row tm-edit-product-row">
+          <div class="col-xl-6 col-lg-6 col-md-12">
+            <form action="/admin/add-product" method="POST" id="addProduct" class="tm-edit-product-form"
+              enctype="multipart/form-data">
+              <div class="form-group mb-3">
+                <label for="name">Product Name
+                </label>
+                <input id="name" name="name" type="text" class="form-control validate" required />
+                <div class="form-group mb-3 mt-3">
+                  <label for="name">Brand Name
+                  </label>
+                  <input id="name" name="brand" type="text" class="form-control validate" required />
+                </div>
+
+              </div>
+              <div class="form-group mb-3">
+                <label for="description">Description</label>
+                <textarea name="discription" class="form-control validate" rows="3" required></textarea>
+              </div>
+
+              <div class="row">
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="category">RAM</label>
+                  <select class="custom-select tm-select-accounts" id="category" name="ram" required>
+                    <option value="">Select Ram Size</option>
+                    <option value="2GB">2GB</option>
+                    <option value="4GB">4GB</option>
+                    <option value="6GB">6GB</option>
+                    <option value="8GB">8GB</option>
+                    <option value="16GB">16GB</option>
+                  </select>
+                </div>
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="category">ROM</label>
+                  <select class="custom-select tm-select-accounts"  id="category" name="rom" required>
+                    <option value="">Select Rom Size</option>
+                    <option value="8GB">8GB</option>
+                    <option value="16GB">16GB</option>
+                    <option value="32GB">32GB</option>
+                    <option value="64GB">64GB</option>
+                    <option value="128GB">128GB</option>
+                  </select>
+                </div>
+
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="expire_date">Price
+                  </label>
+                  <input id="expire_date" name="price" type="number" class="form-control validate"
+                    data-large-mode="true" required />
+                </div>
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
+                  <label for="stock">Color
+                  </label>
+                  <input id="stock" name="color" type="text" class="form-control validate" required />
+                </div>
+              </div>
+
+
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+
+            <div class="custom-file mt-3 mb-3 imgs">
+
+              <label for="frontimg">
+                UPLOAD PRODUCT FRONT IMAGE
+              </label>
+
+
+              <input id="frontimg" name="fimage" type="file" class="btn btn-block mx-auto mb-2 form-control validate"
+                value="UPLOAD PRODUCT FRONT IMAGE" required />
+              <br>
+              <div>
+                <label for="sideimg">
+                  UPLOAD PRODUCT SIDE IMAGE
+
+                </label>
+
+                <input id="sideimg" name="simage" type="file" class="btn btn-block mx-auto mb-2 form-control validate"
+                  value="UPLOAD PRODUCT SIDE IMAGE" required />
+                <label for="backimg">
+                  UPLOAD PRODUCT BACK IMAGE
+
+                </label>
+
+                <input id="backimg" name="bimage" type="file" class="btn btn-block mx-auto mb-2 form-control validate"
+                  value="UPLOAD PRODUCT BACK IMAGE" required />
+              </div>
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block text-uppercase mt-5">Add Product Now</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

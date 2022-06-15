@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+<link rel="stylesheet" href="fonts/icomoon/style.css">
+<link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
+<link rel="stylesheet" href="stylesheets/css/magnific-popup.css">
+<link rel="stylesheet" href="stylesheets/css/jquery-ui.css">
+<link rel="stylesheet" href="stylesheets/css/owl.carousel.min.css">
+<link rel="stylesheet" href="stylesheets/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="stylesheets/css/aos.css">
+<link rel="stylesheet" href="stylesheets/css/style.css">
+
+<div class="site-wrap">
+  <div class="site-section">
+    <div class="container">
+      <form action="/edit-user" method="post" id="checkOut">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-6 mb-5 mb-md-0" id="divv">
+            <h2 class="h3 mb-3 text-black">Edit Accound Details</h2>
+            <div class="p-3 p-lg-5 border">
+
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label for="c_address" class="text-black">User Name </label>
+                  <input type="text" class="form-control" id="c_address" value="{{user.name}}" name="name" placeholder="User Name" required>
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <div class="col-md-6">
+                 
+                  <label for="c_fname" class="text-black">First Name </label>
+                  <input type="text" class="form-control" value="{{user.fname }}" name="fname" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="c_lname" class="text-black">Last Name </label>
+                  <input type="text" class="form-control" value="{{user.lname}}" id="c_lname" name="lname" required>
+                </div>
+              </div>
+            
+
+              
+
+             
+
+              <div class="form-group row mb-5">
+                <div class="col-md-6">
+                  <label for="c_email_address" class="text-black">Email Address </label>
+                  <input type="text" class="form-control" id="c_email_address" value="{{user.email}}" required name="email">
+                </div>
+                <div class="col-md-6">
+                  <label for="c_phone" class="text-black">Phone</label>
+                  <input type="text" class="form-control" id="c_phone" name="number" value="{{user.number}}" required placeholder="Phone Number">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg py-3 btn-block">Save Changes</button>
+            </div>
+         
+          </div>
+      
+        </div>
+      </form>
+      <!-- </form> -->
+    </div>
+  </div>
+</div>
+

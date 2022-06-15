@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="stylesheets/signup.css">
+
+
+<div class="main-w3layouts wrapper">
+    <h1>OTP Verification</h1>
+    <div class="main-agileinfo">
+        <div class="agileits-top">
+            <form action="/forgot-otp" method="post" id="otp">
+            
+                <div class="alert alert-success alert-dismissible fade show">
+                    <strong></strong> {{send}}
+                </div>
+               
+                <input class="text " type="text" name="otp" placeholder="Enter Your OTP" required="">
+
+
+
+                <div class="wthree-text">
+
+                    <div class="clear"> </div>
+                </div>
+                {{#if message}}
+                <div class="alert alert-warning alert-dismissible fade show mt-3">
+                    <strong>Error!</strong> {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {{/if}}
+               
+                <input type="submit" value="Varify Accound">
+            </form>
+            
+
+        </div>
+    </div>

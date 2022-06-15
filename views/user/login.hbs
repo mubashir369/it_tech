@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="stylesheets/signup.css">
+
+<link rel="stylesheet" href="stylesheets/button.css">
+<div class="main-w3layouts wrapper">
+	<h1>Login</h1>
+	
+	<div class="main-agileinfo">
+		<div class="agileits-top">
+			<form action="/login" method="post" id="userLogin">
+				<input class="text " type="text" name="name" placeholder="Username" required="">
+				<input class="text mt-3" type="password" name="password" id="myInput" placeholder="Password"
+					required="">
+				<br>
+				<input type="checkbox" onclick="myFunction()"><span style="color:bisque;"><small> Show
+						Password</small></span>
+
+				<div class="wthree-text">
+
+					<div class="clear"> </div>
+				</div>
+				{{#if loginErr}}
+				<div class="alert alert-warning alert-dismissible fade show">
+					<strong>Error!</strong> {{loginErr}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+				{{/if}}
+			
+			<button id="button" href="" type="submit">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      Submit
+    </button>
+			</form>
+			<div class="d-flex justify-content-between mt-3">
+				<p><a href="/forgot-password-step1"> Forgot Password</a></p>
+				<p><a href="/signup"> Register for a new account</a></p>
+			</div>
+
+		</div>
+	</div>
+	<script>
+		function myFunction() {
+			var x = document.getElementById("myInput");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
+	</script>

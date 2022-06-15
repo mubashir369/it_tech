@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="/stylesheets/admin.css">
+<style>
+    label {
+        color: white;
+    }
+</style>
+<div class="container tm-mt-big tm-mb-big">
+    <div class="row">
+        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="tm-block-title d-inline-block">Edit User</h2>
+                    </div>
+                </div>
+                <div class="row tm-edit-product-row">
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                        <form action="/admin/edit-user/{{edituser._id}}" method="POST" class="tm-edit-product-form"
+                            enctype="multipart/form-data">
+                            <div class="form-group mb-3">
+                                <label for="name">Username
+                                </label>
+                                <input id="name" value="{{edituser.name}}" name="name" type="text"
+                                    class="form-control validate" required />
+                                <div class="form-group mb-3 mt-3">
+                                    <label for="name">First Name
+                                    </label>
+                                    <input id="name" value="{{edituser.fname}}" name="fname" type="text"
+                                        class="form-control validate" required />
+                                </div>
+                                <div class="form-group mb-3 mt-3">
+                                    <label for="name">Last Name
+                                    </label>
+                                    <input id="name" value="{{edituser.lname}}" name="lname" type="text"
+                                        class="form-control validate" required />
+                                </div>
+                            </div>
+
+
+
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+                        <div class="form-group mb-3 ">
+                            <label for="name">Email
+                            </label>
+                            <input id="name" value="{{edituser.email}}" name="email" type="email"
+                                class="form-control validate" required />
+                        </div>
+                        <div class="form-group mb-3 ">
+                            <label for="name">Phone Number
+                            </label>
+                            <input id="name" value="{{edituser.number}}" name="number" type="text"
+                                class="form-control validate" required />
+                        </div>
+                       <!-- <div class="form-group mb-3 ">
+                            <label for="name">Password
+                            </label>
+                            <input id="name" name="password" value="{{edituser.password}}" type="password" class="form-control validate" required />
+                        </div>
+                        -->
+
+
+                        <button type="submit" class="btn btn-primary btn-block text-uppercase mt-5">Update User
+                            Now</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

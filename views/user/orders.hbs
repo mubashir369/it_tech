@@ -1,0 +1,59 @@
+
+
+<section >
+    <div class="container-fluid mt-5">
+ <h1 style="text-align:center ; color:blueviolet;"><b>Orders Details</b></h1>
+        <table id="orders" class="table mt-3 display">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time  </th>
+                    <th scope="col">Address</th>
+                    <th scope="col">State</th>
+                    <th scope="col">PIN Code</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Payment Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Options</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#each Orders}}
+
+               
+                <tr>
+                    <th></th>
+
+                    <td>{{this.date}}</td>
+                    <td>{{this.time}}</td>
+                    <td>{{this.deliveryDetails.address}}</td>
+                    <td>{{this.deliveryDetails.state}}</td>
+                    <td>{{this.deliveryDetails.pinCode}}</td>
+                    <td>{{this.deliveryDetails.phone}}</td>
+                    <td>₹{{this.totelAmound}}.00</td>
+                    <td>{{this.payment}}</td>
+                   
+                   <td><b>{{this.status}}</b></td>
+                 
+                    
+                   
+                    <td>
+                        <div class="row">
+                            <a href="/user/view-order-product/{{this._id}}" class="btn btn-outline-warning pb-1 mb-1">View
+                                Products</a>
+
+                        </div>
+
+                    </td>
+                </tr>
+                
+                {{/each}}
+
+
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,97 @@
+<div class="ScriptTop">
+  <div class="rt-container">
+    <div class="col-rt-4" id="float-right">
+
+      <!-- Ad Here -->
+
+    </div>
+
+  </div>
+</div>
+
+<header class="ScriptHeader">
+  <h1 class="text-center mt-5">Your Profile</h1>
+</header>
+
+<section>
+  <div class="rt-container">
+    <div class="col-rt-12">
+      <div class="Scriptcontent">
+
+        <!-- Student Profile -->
+        <div class="student-profile py-4">
+          <div class="container">
+            <div class="row">
+
+              <div class="col-lg-8">
+                <div class="card shadow-sm">
+                  <div class="card-header bg-transparent border-0">
+                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
+                  </div>
+                  <div class="card-body pt-0">
+                    <table class="table table-bordered">
+                      <tr>
+                        <th width="30%">User Name</th>
+                        <td width="2%">:</td>
+
+                        <td>
+                          <div class="d-flex justify-content-between"><span>{{user.name}}</span> <a href=""></a></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th width="30%">First Name</th>
+                        <td width="2%">:</td>
+                        <td>{{user.fname}}</td>
+                      </tr>
+                      <tr>
+                        <th width="30%">Last Name</th>
+                        <td width="2%">:</td>
+                        <td>{{user.lname}}</td>
+                      </tr>
+                      <tr>
+                        <th width="30%">Email ID</th>
+                        <td width="2%">:</td>
+                        <td>{{user.email}}</td>
+                      </tr>
+                      <tr>
+                        <th width="30%">Phone Number</th>
+                        <td width="2%">:</td>
+                        <td>{{user.number}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div style="height: 26px"></div>
+
+              </div>
+              <div class="col-lg-4">
+                <div class="card shadow-sm">
+
+
+                  <div class="card-body">
+                    <p class="mb-0"><strong class="pr-1"><a href="/edit-user">Edit Account <i
+                            class="fa-regular fa-pen-to-square"></i></a></strong></p>
+                    <p class="mb-0"><strong class="pr-1"><a href="/change-password"> Change Password</a></strong></p>
+                    <p class="mb-0"><strong class="pr-1 "><a
+                          onclick="return confirm('Are you want to delete {{user.name}} ?')" href="/delete-user"
+                          class="text-danger">Delete Account</a></strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Analytics -->
+
+</body>
+
+</html>
