@@ -227,36 +227,36 @@ router.get("/fav/:id", (req, res) => {
 });
 router.get("/orders", async (req, res) => {
   if (req.session.user) {
+    let Pending=false
     let Orders = await userHelper.getUserOrders(req.session.user._id);
+    if(Orders.status=="Pending"){
+      Pending=true
+    }
 
-    res.render("user/orders", { Orders });
+    res.render("user/orders", {Orders,Pending});
   } else {
     res.redirect("/login");
   }
 });
 router.get("/user/view-order-product/:id", async (req, res) => {
   let products = await userHelper.getOrderProducts(req.params.id);
-  let order
-  userHelper.orderData(req.params.id).then((orderData)=>{
-    order=orderData
-    let status={
-      Pending:null,
-      Shipped:null,
-      Delivered:null
-
+  let order;
+  userHelper.orderData(req.params.id).then((orderData) => {
+    order = orderData;
+    let status = {
+      Pending: null,
+      Shipped: null,
+      Delivered: null,
+    };
+    if (order.status == "Pending") {
+      status.Pending = true;
+    } else if (order.status == "Shipped") {
+      status.Shipped = true;
+    } else if (order.status == "Delivered") {
+      status.Delivered = true;
     }
-    if(order.status=='Pending'){
-       status.Pending=true
-    }else if(order.status=='Shipped'){
-      status.Shipped=true
-    }else if(order.status=='Delivered'){
-      status.Delivered=true
-    }
-    res.render("user/view-order-products", { products,order,status });
-   
-  })
- 
-  
+    res.render("user/view-order-products", { products, order, status });
+  });
 });
 router.post("/verify-payment", (req, res) => {
   userHelper
@@ -270,74 +270,89 @@ router.post("/verify-payment", (req, res) => {
       res.json({ status: false, errMsg: "" });
     });
 });
-router.get('/user-profile',async(req,res)=>{
-  if(req.session.user){
-    let user=await userHelper.getUser(req.session.user._id)
-    res.render('user/user-profile',{user})
-  }else{
-    res.redirect('/login')
+router.get("/user-profile", async (req, res) => {
+  if (req.session.user) {
+    let user = await userHelper.getUser(req.session.user._id);
+    res.render("user/user-profile", { user });
+  } else {
+    res.redirect("/login");
   }
-})
-router.get('/edit-user',async(req,res)=>{
-  if(req.session.user){
-    let user=await userHelper.getUser(req.session.user._id)
-      res.render('user/edit-user',{user})
-    
-
-    
-  }else{
-    res.redirect('/login')
+});
+router.get("/edit-user", async (req, res) => {
+  if (req.session.user) {
+    let user = await userHelper.getUser(req.session.user._id);
+    res.render("user/edit-user", { user });
+  } else {
+    res.redirect("/login");
   }
-})
-router.post('/edit-user',(req,res)=>{
-  console.log("*************************");
-  console.log(req.body);
+});
+router.post("/edit-user", (req, res) => {
+ 
   userHelper.updateUser(req.session.user._id, req.body).then((data) => {
-    
-    console.log("22222222222222222222222");
-    res.redirect("/user-profile");
+      res.redirect("/user-profile");
   });
-})
-router.get('/change-password',(req,res)=>{
-  if(req.session.user){
-    res.render('user/change-password',{user:req.session.user})
-  }else{
-    res.redirect('/login')
+});
+router.get("/change-password", (req, res) => {
+  if (req.session.user) {
+    res.render("user/change-password", { user: req.session.user });
+  } else {
+    res.redirect("/login");
   }
-})
-router.post('/change-password',(req,res)=>{
-  if(req.session.user){
-    userHelper.changePassword(req.session.user, req.body).then((data)=>{
-      if(data.status){
-        res.redirect('/login')
-      }else{
-        let err=true
-        res.render('user/change-password',{status:err})
-       err=false
-      }
-  
-    }).catch((err)=>{
-      console.log(err);
-    })
-  }else{
-    res.redirect('/login')
+});
+router.post("/change-password", (req, res) => {
+  if (req.session.user) {
+    userHelper
+      .changePassword(req.session.user, req.body)
+      .then((data) => {
+        if (data.status) {
+          res.redirect("/login");
+        } else {
+          let err = true;
+          res.render("user/change-password", { status: err });
+          err = false;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    res.redirect("/login");
   }
-
-
-})
-router.get('/delete-user',(req,res)=>{
-  if(req.session.user){
-    userHelper.deleteUser(req.session.user._id).then((data)=>{})
-    req.session.destroy()
-    res.redirect('/login')
+});
+router.get("/delete-user", (req, res) => {
+  if (req.session.user) {
+    userHelper.deleteUser(req.session.user._id).then((data) => {});
+    req.session.destroy();
+    res.redirect("/login");
   }
-})
-router.get('/all-products',(req,res)=>{
-  productHelper.getAllProducts().then((products)=>{
+});
+router.get("/all-products", (req, res) => {
+  productHelper.getAllProducts().then((products) => {
     console.log(products);
-    res.render('user/all-products',{products,login:true})
-  })
-
+    res.render("user/all-products", { products, login: true });
+  });
+});
+router.post("/make-payment-now", (req, res) => {
+  if (req.session.user) {
+    console.log(req.body);
+    userHelper
+    .generateRazorpay(req.body.orderId,req.body.totel)
+    .then((response) => {
+      res.json(response);
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+router.get('/cancel-order/:id',async(req,res)=>{
   
+  if(req.session.user){
+    userHelper.cancelOrder(req.params.id).then(()=>{
+      res.redirect('/orders')
+    })
+    
+  }else{
+    res.redirect('/login')
+  }
 })
 module.exports = router;

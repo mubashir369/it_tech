@@ -609,7 +609,7 @@ module.exports = {
         totelAmound: oldTotel,
         discound: discound,
         gst: gst,
-        roudoff: rf,
+        paymentStatus:"Not Paid",
         totel: newTotel,
         date: today,
         time: Time,
@@ -752,7 +752,8 @@ module.exports = {
           { _id: ObjectId(orderId) },
           {
             $set: {
-              status: "placed",
+              status:"Shipped",
+              paymentStatus:"Paid"
             },
           }
         )
@@ -789,4 +790,11 @@ module.exports = {
       });
     });
   },
+  cancelOrder:(orderId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.ORDER_COLLECTION).deleteOne({_id:ObjectId(orderId)}).then(()=>{
+        resolve()
+      })
+    })
+  }
 };

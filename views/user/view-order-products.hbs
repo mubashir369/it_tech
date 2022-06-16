@@ -152,15 +152,15 @@
 
               <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free</p>
             </div>
-            <!-- {{#if status}}
+            {{#if status.Pending}}
             <div class="d-flex justify-content-between mt-3">
-                <form action="" id="checkOut">
-              <button onclick="payment({{order}})" class="btn btn-primary">Make Payment Now</button>
-                </form>
+               
+              <button onclick="payment('{{order._id}}','{{order.totel}}')" class="btn btn-outline-primary">Make Payment Now</button>
+                <a href="/cancel-order/{{order._id}}" onclick="return confirm('Are you want to Clear Your Cart?')" class="btn btn-outline-danger">Cancel Order</a>
               <p class="text-muted mb-0"><span class="fw-bold me-4"></span></p>
             </div>
             {{/if}}
--->
+
 
           </div>
           <div class="card-footer border-0 px-4 py-5"
@@ -177,73 +177,85 @@
 
 
 <script>
-
-
-  $("#checkOut").submit((e) => {
-    e.preventDefault()
+  function payment(id,amount){
+    console.log("button cliked")
+    amount=parseInt(amount)
     $.ajax({
-      url: '/place-order',
-      method: 'post',
-      data: $('#checkOut').serialize(),
-      success: (response) => {
-        alert(response)
-        if (response.cod) {
-          location.href = '/thankYou'
-        } else {
-          razorpayPayment(response)
-
-        }
+      url:'/make-payment-now',
+      
+      data:{
+        orderId:id,
+        totel:amount,
+      },
+      method:'post',
+      success:function(data){
+        razorpayPayment(data)
       }
     })
-  })
-  function razorpayPayment(order) {
+  }
+  function razorpayPayment(order){
 
-    var options = {
-      "key": "rzp_test_jUspqW6Y2QXpgt", // Enter the Key ID generated from the Dashboard
-      "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      "currency": "INR",
-      "name": "Mobiles",
-      "description": "Test Transaction",
-      "image": "https://example.com/your_logo",
-      "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      "handler": function (response) {
-
-        varifyPayment(response, order)
-      },
-      "prefill": {
+  var options = {
+    "key": "rzp_test_jUspqW6Y2QXpgt", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Mobiles",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+    
+        varifyPayment(response,order)
+    },
+    "prefill": {
         "name": "Gaurav Kumar",
         "email": "gaurav.kumar@example.com",
         "contact": "9999999999"
-      },
-      "notes": {
+    },
+    "notes": {
         "address": "Razorpay Corporate Office"
-      },
-      "theme": {
+    },
+    "theme": {
         "color": "#3399cc"
-      }
-    };
-    var rzp1 = new Razorpay(options);
-    rzp1.open();
+    }
+};
+var rzp1 = new Razorpay(options);
+ rzp1.open();
 
-  }
-  function varifyPayment(payment, order) {
+}
+function varifyPayment(payment,order){
+  $.ajax({
+    url:'/verify-payment',
+    method:'post',
+    data:{
+      payment,
+      order
+    },
+    success:(response)=>{
+      if(response.status){
+         alert("Success")
+      }else{
+        alert("Payment Filed")
+      }
+    }
+  })
+}
+
+  function cancelOrder(orderId){
+    
     $.ajax({
-      url: '/verify-payment',
-      method: 'post',
-      data: {
-        payment,
-        order
+     url:'/cancel-order',
+     method:'post',
+      data:{
+        orderId:orderId
       },
-      success: (response) => {
-        if (response.status) {
-          location.href = '/thankYou'
-        } else {
-          alert("Payment Filed")
-        }
+      success:()=>{
+        alert("Order Cancelled")
+        location.href='/orders'
       }
     })
   }
 
 
-
+ 
 </script>

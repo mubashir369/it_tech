@@ -157,3 +157,28 @@ $(document).ready(function () {
     },
   });
 });
+$(document).ready(function () {
+  $("#changepsw").validate({
+    rules: {
+      oldpsw: {
+        required: true,
+        minlength: 3,
+        maxlength:8
+      },
+      
+      newpsw: {
+        required: true,
+        minlength: 3,
+        maxlength:8
+        
+      },
+      cnfpsw:{
+        required:true,
+        equalTo: "#newpsw",
+        minlength: 3,
+        maxlength:8
+
+      },
+    },
+  });
+});

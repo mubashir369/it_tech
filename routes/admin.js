@@ -1,4 +1,5 @@
 const express = require("express");
+const res = require("express/lib/response");
 const { redirect } = require("express/lib/response");
 const async = require("hbs/lib/async");
 const { render, response } = require("../app");
@@ -31,13 +32,10 @@ router.post("/", (req, res) => {
 });
 router.get("/add-product", (req, res) => {
   if (req.session.admin) {
-    res.render("admin/add-product", { admin:true });
-  }else{
-    
+    res.render("admin/add-product", { admin: true });
+  } else {
     res.redirect("/admin");
   }
-  
-  
 });
 
 /*router.get("/adminSignup", (req, res) => {
@@ -67,11 +65,11 @@ router.get("/view-product", (req, res) => {
   }
 });
 router.post("/add-product", function (req, res) {
-  if(req.session.admin){
+  if (req.session.admin) {
     console.log(req.body);
     console.log(req.files.fimage);
     let product = req.body;
-  
+
     productHelper.addProduct(req.body, (id) => {
       let fimage = req.files.fimage;
       fimage.mv("./public/product-image/front_" + id + ".jpg", (err, done) => {
@@ -86,7 +84,6 @@ router.post("/add-product", function (req, res) {
       bimage.mv("./public/product-image/back_" + id + ".jpg");
     });
   }
-
 });
 router.get("/edit-product/:id", async (req, res) => {
   let product = await productHelper.getProductDetails(req.params.id);
@@ -130,40 +127,43 @@ router.get("/delete-product/:id", (req, res) => {
     });
   });
 router.get("/add-user", (req, res) => {
-  if(req.session.admin){
+  if (req.session.admin) {
     res.render("admin/add-user", { admin: true, adminlogin: true });
-  }else{
+  } else {
     res.redirect("/admin");
   }
-  
 });
 /********************************OTP*************************************** */
-let OTPmessage={}
-router.post('/add-user',(req,res)=>{
-  userHelper.userSignUp(req.body).then((response)=>{
-    if(response.status){
-
-      OTPmessage.message="OTP send to "+req.body.email
-      let send=OTPmessage.message
-      res.render('user/otp',{send})
-    }else{
-      res.render('admin/add-user',{message:response.message,admin: true, adminlogin: true})
+let OTPmessage = {};
+router.post("/add-user", (req, res) => {
+  userHelper.userSignUp(req.body).then((response) => {
+    if (response.status) {
+      OTPmessage.message = "OTP send to " + req.body.email;
+      let send = OTPmessage.message;
+      res.render("user/otp", { send });
+    } else {
+      res.render("admin/add-user", {
+        message: response.message,
+        admin: true,
+        adminlogin: true,
+      });
     }
-    
-  })
-  
-
-})
-router.post('/otp',(req,res)=>{
-  userHelper.varifyMail(req.body.otp).then((user)=>{
-    if(user.user){
-      res.redirect('/login')
-    }else{
-      let send=OTPmessage.message
-      res.render('user/otp',{message:'Invalid OTP or Check Your EmailID',uesr:user.userData,send})
+  });
+});
+router.post("/otp", (req, res) => {
+  userHelper.varifyMail(req.body.otp).then((user) => {
+    if (user.user) {
+      res.redirect("/login");
+    } else {
+      let send = OTPmessage.message;
+      res.render("user/otp", {
+        message: "Invalid OTP or Check Your EmailID",
+        uesr: user.userData,
+        send,
+      });
     }
-  })
-})
+  });
+});
 /*********************************OTP************************************** */
 /*router.post("/add-user", (req, res) => {
   console.log(req.body);
@@ -194,33 +194,47 @@ router.post("/edit-user/:id", (req, res) => {
     res.redirect("/admin/all-users");
   });
 });
-router.get('/dashboard',(req,res)=>{
-  if(req.session.admin){
-    res.render('admin/dashboard',{admin:true})
-  }else{
-    res.redirect('/admin')
+router.get("/dashboard",async (req, res) => {
+  if (req.session.admin) {
+    //let totelSale=await adminHelper.getTotalSale();
+    res.render("admin/dashboard", { admin: true });
+  } else {
+    res.redirect("/admin");
   }
-})
-router.get('/view-orders',(req,res)=>{
-  if(req.session.admin){
-    adminHelper.getAllOrders().then((orders)=>{
-      res.render('admin/orderlist',{admin:true,orders})
+});
+router.get("/view-orders", (req, res) => {
+  if (req.session.admin) {
+    adminHelper.getAllOrders().then((orders) => {
+      res.render("admin/orderlist", { admin: true, orders });
+    });
+  } else {
+    res.redirect("/admin");
+  }
+});
+router.get("/view-order-detailes/:id", async(req, res) => {
+  if (req.session.admin) {
+    let products = await userHelper.getOrderProducts(req.params.id);
+    adminHelper.getOrderDetails(req.params.id).then((order) => {
+      res.render("admin/order-detailes", { admin: true, order ,products}
+      );
+      
+    });
+  } else {
+    res.redirect("/admin");
+  }
+});
+router.post('/changeStatus',(req,res)=>{
+  console.log("8888888888888888888888888888");
+  console.log(req.body);
+  adminHelper.ChangeOrderStatus(req.body).then((response)=>{
+    res.json(response)
+  })
 
-    })
-    
-  }else{
-    res.redirect('/admin')
-  }
 })
-router.get('/view-order-detailes/:id',(req,res)=>{
-  if(req.session.admin){
-    adminHelper.getOrderDetails(req.params.id).then((order)=>{
-      res.render('admin/order-detailes',{admin:true,order})
-
-    })
-    
-  }else{
-    res.redirect('/admin')
-  }
+router.post('/changePaymentStatus',(req,res)=>{
+  console.log(req.body);
+  adminHelper.changePaymentStatus(req.body).then((response)=>{
+    res.json(response)
+  })
 })
 module.exports = router;

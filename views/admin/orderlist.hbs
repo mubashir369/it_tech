@@ -99,7 +99,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item ">
         <a class="nav-link" href="/admin/dashboard">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
@@ -127,7 +127,7 @@
           <i class="fa-solid fa-user-group"></i>
           <span>Users</span></a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="/admin/view-orders">
 
           <i class="fa-brands fa-opencart"></i>
@@ -229,11 +229,12 @@
                       <th scope="col">Date</th>
                       <th scope="col">time</th>
                       <th scope="col">State</th>
-                      <th scope="col">PinCode</th>
-                      <th scope="col">Phone Number</th>
+                     
+                     
                       <th scope="col">Amound</th>
+                       <th scope="col">Payment Status</th>
                       <th scope="col">Payment Type</th>
-                      <th scope="col">Current Status</th>
+                      <th scope="col">Order Status</th>
                       
                       <th scope="col">Options</th>
                     </tr>
@@ -246,9 +247,12 @@
                       <td>{{this.date}}</td>
                       <td>{{this.time}}</td>
                       <td>{{this.deliveryDetails.state}}</td>
-                      <td>{{this.deliveryDetails.pinCode}}</td>
-                      <td>{{this.deliveryDetails.phone}}</td>
+                      
+                      
                       <td>{{this.totel}}</td>
+                      
+                      <td>{{this.paymentStatus}}</td>
+                   
                       <td>{{this.payment}}</td>
                       <td>{{this.status}}</td>
                       

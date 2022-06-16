@@ -99,7 +99,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item ">
         <a class="nav-link" href="/admin/dashboard">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
@@ -108,13 +108,13 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      
+
       <!-- Heading -->
       <div class="sidebar-heading">
         Options
       </div>
 
-      
+
       <li class="nav-item">
         <a class="nav-link" href="/admin/view-product">
 
@@ -127,7 +127,7 @@
           <i class="fa-solid fa-user-group"></i>
           <span>Users</span></a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="/admin/view-orders">
 
           <i class="fa-brands fa-opencart"></i>
@@ -159,7 +159,7 @@
       <div id="content">
 
         <!-- Topbar -->
-     <!--   <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <!--   <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                    <form class="form-inline">
             <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -207,64 +207,102 @@
           </ul>
 
         </nav>-->
-                <!-- End of Topbar -->
+        <!-- End of Topbar -->
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Orders</h1>
-          
+          <h1 class="h3 mb-2 text-gray-800">Order Details</h1>
+
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary"></h6>
+            <div class="card-header py-3 d-flex justify-content-between">
+              <div>
+                <p class="m-0 font-weight-bold text-primary">Name:<small> {{order.deliveryDetails.fname}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Phone:<small> {{order.deliveryDetails.phone}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Email:<small> {{order.deliveryDetails.email}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">State:<small> {{order.deliveryDetails.state}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Address:<small> {{order.deliveryDetails.address}}</small>
+                </p>
+                <p class="m-0 font-weight-bold text-primary">Pin Code:<small> {{order.deliveryDetails.pinCode}}</small>
+                </p>
+              </div>
+              <div>
+                <p class="m-0 font-weight-bold text-primary">Order ID:<small> {{order._id}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Date:<small> {{order.date}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Time:<small> {{order.time}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Payment Type:<small> {{order.payment}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Order Status:<small> {{order.status}}</small></p>
+                <p class="m-0 font-weight-bold text-primary">Payment Status:<small> {{order.paymentStatus}}</small></p>
+
+              </div>
+
             </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                     
-                      <th scope="col">Date</th>
-                      <th scope="col">time</th>
-                      <th scope="col">State</th>
-                      <th scope="col">PinCode</th>
-                      <th scope="col">Phone Number</th>
-                      <th scope="col">Amound</th>
-                      <th scope="col">Payment Type</th>
-                      <th scope="col">Current Status</th>
-                      
-                      <th scope="col">Options</th>
+                      <th scope="col">Image</th>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Brand</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Qty</th>
+                      <th scope="col">Totel</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {{#each orders}}
+{{#each products}}
                     <tr>
-                        
-                      <td>{{this.date}}</td>
-                      <td>{{this.time}}</td>
-                      <td>{{this.deliveryDetails.state}}</td>
-                      <td>{{this.deliveryDetails.pinCode}}</td>
-                      <td>{{this.deliveryDetails.phone}}</td>
-                      <td>{{this.totel}}</td>
-                      <td>{{this.payment}}</td>
-                      <td>{{this.status}}</td>
-                      
-                      <td>
-                        <div class="row">
-                          <a href="/admin/view-order-detailes/{{this._id}}" class="btn btn-primary pb-1 mb-1">View More Details</a>
-                        
-                        </div>
 
-                      </td>
+                      <td><img src="/product-image/front_{{product._id}}.jpg" style="width:100px ;" alt=""></td>
+                      <td>{{product.name}}</td>
+                      <td>{{product.brand}}</td>
+                      <td>{{product.price}}</td>
+                      <td>{{this.quantity}}</td>
+                      <td>{{this.totel}}</td>
                     </tr>
-                    {{/each}}
+{{/each}}
                   </tbody>
                 </table>
               </div>
             </div>
+            <div class="card-header py-3 d-flex justify-content-between">
+
+              <div>
+                <div class="mt-3">
+                  <a>Change Order Status</a>
+                  <select name="status" onchange="changeStatus('{{order._id}}')" id="status">
+                    <option value="{{order.status}}">{{order.status}}</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
+                  <br>
+
+                </div>
+
+                <div class="mt-3">
+                  <a>Change Payment Status</a>
+
+                  <select name="pstatus" onchange="changePaymentStatus('{{order._id}}')" id="pstatus">
+                    <option value="{{order.paymentStatus}}">{{order.paymentStatus}}</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Not Paid">Not Paid</option>
+
+                  </select>
+                </div>
+              </div>
+              <div>
+                <h6><b>Totel : {{order.totelAmound}}</b></h6>
+                <h6><b>Discount5% : {{order.discound}}</b></h6>
+                <h6><b>GST 18% : {{order.gst}}</b></h6>
+                <h5><b> Paid Amound : {{order.totel}}</b></h5>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -334,3 +372,47 @@
 </body>
 
 </html>
+
+
+<script>
+  function changeStatus(OrderId) {
+    console.log("clicked")
+
+    let val = document.getElementById("status").value
+    console.log(val)
+    console.log(OrderId)
+    $.ajax({
+      url: '/admin/changeStatus',
+      method: 'post',
+      data: {
+        orderId: OrderId,
+        value: val,
+      },
+      success: (data) => {
+        console.log(data)
+        window.location.reload()
+
+      }
+    })
+  }
+  function changePaymentStatus(OrderId) {
+    console.log("clicked")
+
+    let val = document.getElementById("pstatus").value
+    console.log(val)
+    console.log(OrderId)
+    $.ajax({
+      url: '/admin/changePaymentStatus',
+      method: 'post',
+      data: {
+        orderId: OrderId,
+        value: val,
+      },
+      success: (data) => {
+        console.log(data)
+        window.location.reload()
+
+      }
+    })
+  }
+</script>

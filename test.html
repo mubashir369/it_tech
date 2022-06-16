@@ -1,0 +1,12 @@
+<select id="comboA" onchange="getComboA(this)">
+  <option value="">Select combo</option>
+  <option value="Value1">Text1</option>
+  <option value="Value2">Text2</option>
+  <option value="Value3">Text3</option>
+</select>
+<script>
+  function getComboA(selectObject) {
+    var value = selectObject.value;
+    console.log(value);
+  }
+</script>
