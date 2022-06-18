@@ -82,6 +82,7 @@ router.post("/add-product", function (req, res) {
       simage.mv("./public/product-image/side_" + id + ".jpg");
       let bimage = req.files.bimage;
       bimage.mv("./public/product-image/back_" + id + ".jpg");
+      productHelper.addProductImage(id).then(()=>{})
     });
   }
 });
@@ -196,8 +197,22 @@ router.post("/edit-user/:id", (req, res) => {
 });
 router.get("/dashboard",async (req, res) => {
   if (req.session.admin) {
+    let numberOfUsers=await adminHelper.getNumberOfUsers();
+    let totelSale=await adminHelper.getTotelSale();
+    let pendingAmt=await adminHelper.getPendingAmt();
+    let penOrder=await adminHelper.getPenOrder();
+    let totelRecivedAmt=totelSale-pendingAmt
+    //let dayReport=await adminHelper.getDayReport();
+    let dashboard={ 
+      usrcount:numberOfUsers,
+      totelSale:totelSale,
+      penAmt:pendingAmt,
+      penOrder:penOrder,
+      totelRecivedAmt:totelRecivedAmt
+    }
     //let totelSale=await adminHelper.getTotalSale();
-    res.render("admin/dashboard", { admin: true });
+   
+    res.render("admin/dashboard", { admin: true ,dashboard});
   } else {
     res.redirect("/admin");
   }

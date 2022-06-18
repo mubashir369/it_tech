@@ -107,24 +107,110 @@ module.exports = {
         });
     });
   },
-  getTotalSale: () => {
-    return new Promise(async(resolve, reject) => {
-      let totelSale =await db
+
+  getNumberOfUsers: () => {
+    return new Promise(async (resolve, reject) => {
+      let usrCount = await db
         .get()
-        .collection(collection.ORDER_COLLECTION)
-        .aggregate([{
-          $group: {
-              _id: '',
-              totel: { $sum: '$totel' }
-          }
-       }, {
-          $project: {
-              _id: 0,
-              totel: '$totel'
-          }
-      }])
-      console.log("totelsale******************************");
-      console.log(totelSale);
+        .collection(collection.USER_COLLECTION)
+        .countDocuments();
+      console.log("usrCount******************************");
+      console.log(usrCount);
+      resolve(usrCount);
     });
   },
+  getTotelSale: () => {
+    return new Promise(async (resolve, reject) => {
+      let totel = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          {
+            $group: {
+              _id: null,
+              totel: { $sum: "$totel" },
+            },
+          },
+        ])
+        .toArray();
+
+      if (totel[0]) {
+        resolve(totel[0].totel);
+        console.log(totel[0].totel);
+      } else {
+        resolve({ totel: null });
+      }
+    });
+  },
+  getPendingAmt: () => {
+    return new Promise(async (resolve, reject) => {
+      let totel = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          { $match: { status: "Pending" } },
+          {
+            $group: {
+              _id: null,
+              totel: { $sum: "$totel" },
+            },
+          },
+        ])
+        .toArray();
+      console.log("4444444444444444444444444444444444444444444444444444");
+      console.log(totel[0].totel);
+      resolve(totel[0].totel);
+    });
+  },
+  getPenOrder: () => {
+    return new Promise(async (resolve, reject) => {
+      let penOrder = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .find({ status: "Pending" })
+        .count();
+
+      resolve(penOrder);
+    });
+  },
+/*  getDayReport: () => {
+    return new Promise(async (resolve, reject) => {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0");
+      var yyyy = today.getFullYear();
+      var dt = new Date();
+      var hours = dt.getHours();
+      var AmOrPm = hours >= 12 ? "pm" : "am";
+      hours = hours % 12 || 12;
+      var minutes = dt.getMinutes();
+      var Time = hours + ":" + minutes + "-" + AmOrPm;
+      today = mm + "/" + dd + "/" + yyyy;
+
+      /*function Last7Days () {
+        var result = [];
+        for (var i=0; i<7; i++) {
+            var d = new Date();
+            d.setDate(d.getDate() - i);
+            result.push( formatDate(d) )
+        }
+        return(result.join(','));
+    }*/
+/*
+      let totel = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          { $match: { date: today } } ,
+          { $group: { _id: null, date: "$date" } },
+          {$project: {_id: 0, date: 1}},
+        ])
+
+      console.log(
+        "**********************************************************day****"
+      );
+      console.log(totel);
+      resolve(totel);
+    });
+  },*/
 };

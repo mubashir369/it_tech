@@ -1,59 +1,49 @@
+<section>
+    <div class="container mt-5">
+        <h1 style="text-align:center ; color:rgb(126, 112, 139);" class="mb-5"><small>Order History</small> </h1>
+        <div class="d-flex justify-content-center row">
 
+            <div class="col-md-10">
 
-<section >
-    <div class="container-fluid mt-5">
- <h1 style="text-align:center ; color:blueviolet;"><b>Orders Details</b></h1>
-        <table id="orders" class="table mt-3 display">
-            <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Time  </th>
-                    <th scope="col">Address</th>
-                    <th scope="col">State</th>
-                    <th scope="col">PIN Code</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Payment Type</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Options</th>
+                <div class="rounded">
+                    <div class="table-responsive table-borderless">
 
-                </tr>
-            </thead>
-            <tbody>
-                {{#each Orders}}
+                        <table class="table table-hover" id="orders">
+                            <thead>
+                                <tr>
 
-               
-                <tr>
-                    <th></th>
+                                    <th>NO</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Payment Type</th>
+                                    <th>status</th>
+                                    <th>Total</th>
+                                    <th>Created</th>
+                                    <th>Time</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                {{#each Orders}}
+                                <tr>
 
-                    <td>{{this.date}}</td>
-                    <td>{{this.time}}</td>
-                    <td>{{this.deliveryDetails.address}}</td>
-                    <td>{{this.deliveryDetails.state}}</td>
-                    <td>{{this.deliveryDetails.pinCode}}</td>
-                    <td>{{this.deliveryDetails.phone}}</td>
-                    <td>₹{{this.totelAmound}}.00</td>
-                    <td>{{this.payment}}</td>
-                   
-                   <td><b>{{this.status}}</b></td>
-                 
-                    
-                   
-                    <td>
-                        <div class="row">
-                            <a href="/user/view-order-product/{{this._id}}" class="btn btn-outline-warning pb-1 mb-1">View
-                                Products</a>
-
-                        </div>
-
-                    </td>
-                </tr>
-                
-                {{/each}}
-
-
-            </tbody>
-        </table>
+                                    <td></td>
+                                    <td>{{this.deliveryDetails.fname}}</td>
+                                    <td>{{this.deliveryDetails.phone}}</td>
+                                    <td>{{this.payment}}</td>
+                                    <td>{{this.status}}</td>
+                                    <td>₹{{this.totel}}.00</td>
+                                    <td>{{this.date}}</td>
+                                    <td>{{this.time}}</td>
+                                    <td><a href="/user/view-order-product/{{this._id}}"
+                                            class="btn btn-outline-secondary">view more</a></td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

@@ -175,33 +175,7 @@ module.exports = {
         });
     });
   },
-  //******************************************************OTP****************************** */
-
-  /* doSignup: (userData) => {
-    return new Promise(async (resolve, reject) => {
-      userData.password = await bcrypt.hash(userData.password, 10);
-      let email = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .findOne({ email: userData.email });
-      let response = {};
-      console.log("email is " + email);
-      if (email) {
-        response.status = false;
-        response.emailErr = true;
-        resolve(response);
-      } else {
-        db.get()
-          .collection(collection.USER_COLLECTION)
-          .insertOne(userData)
-          .then((status) => {
-            response.status = true;
-            response.emailErr = false;
-            resolve(response);
-          });
-      }
-    });
-  }*/
+ 
   doLogin: (userData) => {
     return new Promise(async (resolve, reject) => {
       let loginStatus = false;
@@ -213,17 +187,17 @@ module.exports = {
       if (user) {
         bcrypt.compare(userData.password, user.password).then((status) => {
           if (status) {
-            console.log("log in sucsess");
+         
             response.user = user;
             response.status = true;
             resolve(response);
           } else {
-            console.log("login failed");
+         
             resolve({ status: false });
           }
         });
       } else {
-        console.log("filisdskdksdjk");
+     
         resolve({ status: false });
       }
     });
@@ -316,11 +290,11 @@ module.exports = {
         let proExist = userCart.products.findIndex(
           (product) => product.item == proId
         );
-        console.log("proexist is@@@@@" + proExist);
+    
         if (proExist != -1) {
-          console.log("totelobj is #############" + totelobj);
+     
 
-          console.log("totel is #############" + totel);
+          
 
           db.get()
             .collection(collection.CART_COLLECTION)
@@ -411,8 +385,7 @@ module.exports = {
         .get()
         .collection(collection.CART_COLLECTION)
         .findOne({ user: ObjectId(usrId) });
-      console.log("user id is@@@@@@@@" + usrId);
-      console.log("cart is@@@@@@@@@@@" + cart);
+     
       if (cart) {
         count = cart.products.length;
       }

@@ -6,8 +6,8 @@ var db = require("../config/connection");
 var objectId = require("mongodb").ObjectID;
 module.exports = {
   addProduct: (product, callback) => {
-    console.log("@@@@@@@@@@@@@@@@@@@" + product.price)
-    product.price=parseInt(product.price)
+    console.log("@@@@@@@@@@@@@@@@@@@" + product.price);
+    product.price = parseInt(product.price);
     db.get()
       .collection("product")
       .insertOne(product)
@@ -16,6 +16,24 @@ module.exports = {
         console.log("this is the id" + data.insertedId);
         callback(data.insertedId);
       });
+  },
+  addProductImage: (id) => {
+    return new Promise((resolve, reject) => {
+      let images=[
+        "front_"+id+".jpg",
+        "side_"+id+".jpg",
+        "back_"+id+".jpg"
+      ]
+      db.get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .updateOne({
+          _id: objectId(id),
+        },
+        {
+          $set:{images:images}
+        }
+        );
+    });
   },
   getAllProducts: () => {
     return new Promise(async (resolve, reject) => {
@@ -28,10 +46,16 @@ module.exports = {
     });
   },
   getLatestProducts: () => {
-    return new Promise((resolve,reject)=>{
-      let products = db.get().collection(collection.PRODUCT_COLLECTION).find().sort({_id:-1}).limit(3).toArray();
+    return new Promise((resolve, reject) => {
+      let products = db
+        .get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .find()
+        .sort({ _id: -1 })
+        .limit(3)
+        .toArray();
       resolve(products);
-    })
+    });
   },
   getProductDetails: (proId) => {
     return new Promise((resolve, reject) => {
@@ -57,19 +81,23 @@ module.exports = {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
-        .updateOne({ _id: ObjectId(proId)},{
-            $set:{
-                name:product.name,
-                brand:product.brand,
-                discription:product.discription,
-                rem:product.ram,
-                rom:product.rom,
-                price:product.price,
-                color:product.color
-            }
-        }).then((response)=>{
-            resolve()
-        })
+        .updateOne(
+          { _id: ObjectId(proId) },
+          {
+            $set: {
+              name: product.name,
+              brand: product.brand,
+              discription: product.discription,
+              rem: product.ram,
+              rom: product.rom,
+              price: product.price,
+              color: product.color,
+            },
+          }
+        )
+        .then((response) => {
+          resolve();
+        });
     });
   },
 };
