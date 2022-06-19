@@ -1,28 +1,23 @@
-<style>
-  h1{
-    background-color: ;
-    justify-content: space-around;
-  }
-</style>
- <div class="bg-secondary text-center "  style="width:100%;height:30px;display:flex;justify-content: space-around;">
-   <div> <input type="radio" name="brand" id=""><label for="">ALL</label></div>
-  <div> <input type="radio" name="brand" id=""><label for="">OPPO</label></div>
-   <div><input type="radio" name="brand" id=""><label for="">SAMSUNG</label></div>
-   <div><input type="radio" name="brand" id=""><label for="">REALME</label></div>
-   <div><input type="radio" name="brand" id=""><label for="">VIVO</label></div>
-   <div><input type="radio" name="brand" id=""><label for="">REDEMI</label></div>
-   <div><input type="radio" name="brand" id=""><label for="">ONE PLUSE</label></div>
 
- </div>
+<!--<div class="bg-secondary text-center " style="width:100%;height:30px;display:flex;justify-content: space-around;">
+  <div> <input onclick="Choise('ALL')" type="radio" name="brand" id=""><label for="">ALL</label></div>
+  <div> <input onclick="Choise('OPPO')" type="radio" name="brand" id=""><label for="">OPPO</label></div>
+  <div><input onclick="Choise('SAMSUNG')" type="radio" name="brand" id=""><label for="">SAMSUNG</label></div>
+  <div><input onclick="Choise('REALME')" type="radio" name="brand" id=""><label for="">REALME</label></div>
+  <div><input onclick="Choise('VIVO')" type="radio" name="brand" id=""><label for="">VIVO</label></div>
+  <div><input onclick="Choise('REDMI')" type="radio" name="brand" id=""><label for="">REDEMI</label></div>
+  <div><input onclick="Choise('ONE PLUSE')" type="radio" name="brand" id=""><label for="">ONE PLUSE</label></div>
+
+</div>-->
 <section class="product_section layout_padding">
- 
-  
+
+
   <div class="container">
-    
+
     <div class="heading_container heading_center">
       <h2>Our Products</h2>
     </div>
-   
+
     <div class="row">
       {{#each products}}
       <div class="col-sm-6 col-lg-4">
@@ -52,6 +47,21 @@
 
 
     </div>
-    
+
   </div>
 </section>
+
+<script>
+  function Choise(brand){
+    $.ajax({
+      url:'/customer-choise',
+      method:'post',
+      data:{
+        brand:brand
+      },
+      success:()=>{
+        location.reload()
+      }
+    })
+  }
+</script>

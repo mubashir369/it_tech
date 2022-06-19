@@ -100,4 +100,21 @@ module.exports = {
         });
     });
   },
+  productBrand:(brand)=>{
+    return new Promise((resolve,reject)=>{
+      if(brand=='ALL'){
+        db.get().collection(collection.PRODUCT_COLLECTION).find().toArray().then((data)=>{
+          resolve(data)
+        })
+      }else{
+        db.get().collection(collection.PRODUCT_COLLECTION).find({brand:brand}).toArray().then((data)=>{
+          resolve(data)
+          console.log("daaaaaaaaaaaaaaaaaaaaaaata");
+          console.log(data);
+        })
+
+      }
+    
+    })
+  }
 };

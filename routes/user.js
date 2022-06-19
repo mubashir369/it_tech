@@ -355,4 +355,13 @@ router.get('/cancel-order/:id',async(req,res)=>{
     res.redirect('/login')
   }
 })
+/*router.post('/customer-choise',(req,res)=>{
+  console.log("4555555555555555555555555555555");
+  console.log(req.body.brand);
+  productHelper.productBrand(req.body.brand).then((product)=>{
+    console.log("haaaaaaaaaaaiiiiiiiiiiiiiiiiii");
+   
+    res.redirect('user/all-products',{product})
+  })
+})*/
 module.exports = router;
