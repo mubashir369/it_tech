@@ -173,44 +173,5 @@ module.exports = {
       resolve(penOrder);
     });
   },
-/*  getDayReport: () => {
-    return new Promise(async (resolve, reject) => {
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, "0");
-      var mm = String(today.getMonth() + 1).padStart(2, "0");
-      var yyyy = today.getFullYear();
-      var dt = new Date();
-      var hours = dt.getHours();
-      var AmOrPm = hours >= 12 ? "pm" : "am";
-      hours = hours % 12 || 12;
-      var minutes = dt.getMinutes();
-      var Time = hours + ":" + minutes + "-" + AmOrPm;
-      today = mm + "/" + dd + "/" + yyyy;
 
-      /*function Last7Days () {
-        var result = [];
-        for (var i=0; i<7; i++) {
-            var d = new Date();
-            d.setDate(d.getDate() - i);
-            result.push( formatDate(d) )
-        }
-        return(result.join(','));
-    }*/
-/*
-      let totel = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .aggregate([
-          { $match: { date: today } } ,
-          { $group: { _id: null, date: "$date" } },
-          {$project: {_id: 0, date: 1}},
-        ])
-
-      console.log(
-        "**********************************************************day****"
-      );
-      console.log(totel);
-      resolve(totel);
-    });
-  },*/
 };

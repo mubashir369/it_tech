@@ -82,7 +82,7 @@ router.post("/add-product", function (req, res) {
       simage.mv("./public/product-image/side_" + id + ".jpg");
       let bimage = req.files.bimage;
       bimage.mv("./public/product-image/back_" + id + ".jpg");
-      productHelper.addProductImage(id).then(()=>{})
+      productHelper.addProductImage(id).then(() => {});
     });
   }
 });
@@ -165,20 +165,6 @@ router.post("/otp", (req, res) => {
     }
   });
 });
-/*********************************OTP************************************** */
-/*router.post("/add-user", (req, res) => {
-  console.log(req.body);
-  userHelper.doSignup(req.body).then((response) => {
-    emailErr = response.emailErr;
-    if (emailErr) {
-      res.render("admin/add-user", { emailErr, admin: true, adminlogin: true });
-    } else {
-      res.redirect("/admin/all-users");
-    }
-
-    console.log(response);
-  });
-});*/
 router.get("/delete-user/:id", (req, res) => {
   let usrId = req.params.id;
   userHelper.deleteUser(usrId).then((response) => {
@@ -195,24 +181,24 @@ router.post("/edit-user/:id", (req, res) => {
     res.redirect("/admin/all-users");
   });
 });
-router.get("/dashboard",async (req, res) => {
+router.get("/dashboard", async (req, res) => {
   if (req.session.admin) {
-    let numberOfUsers=await adminHelper.getNumberOfUsers();
-    let totelSale=await adminHelper.getTotelSale();
-    let pendingAmt=await adminHelper.getPendingAmt();
-    let penOrder=await adminHelper.getPenOrder();
-    let totelRecivedAmt=totelSale-pendingAmt
-    //let dayReport=await adminHelper.getDayReport();
-    let dashboard={ 
-      usrcount:numberOfUsers,
-      totelSale:totelSale,
-      penAmt:pendingAmt,
-      penOrder:penOrder,
-      totelRecivedAmt:totelRecivedAmt
-    }
+    let numberOfUsers = await adminHelper.getNumberOfUsers();
+    let totelSale = await adminHelper.getTotelSale();
+    let pendingAmt = await adminHelper.getPendingAmt();
+    let penOrder = await adminHelper.getPenOrder();
+    let totelRecivedAmt = totelSale - pendingAmt;
+    let dayReport=await adminHelper.getDayReport();
+    let dashboard = {
+      usrcount: numberOfUsers,
+      totelSale: totelSale,
+      penAmt: pendingAmt,
+      penOrder: penOrder,
+      totelRecivedAmt: totelRecivedAmt,
+    };
     //let totelSale=await adminHelper.getTotalSale();
-   
-    res.render("admin/dashboard", { admin: true ,dashboard});
+
+    res.render("admin/dashboard", { admin: true, dashboard });
   } else {
     res.redirect("/admin");
   }
@@ -226,30 +212,24 @@ router.get("/view-orders", (req, res) => {
     res.redirect("/admin");
   }
 });
-router.get("/view-order-detailes/:id", async(req, res) => {
+router.get("/view-order-detailes/:id", async (req, res) => {
   if (req.session.admin) {
     let products = await userHelper.getOrderProducts(req.params.id);
     adminHelper.getOrderDetails(req.params.id).then((order) => {
-      res.render("admin/order-detailes", { admin: true, order ,products}
-      );
-      
+      res.render("admin/order-detailes", { admin: true, order, products });
     });
   } else {
     res.redirect("/admin");
   }
 });
-router.post('/changeStatus',(req,res)=>{
-  console.log("8888888888888888888888888888");
-  console.log(req.body);
-  adminHelper.ChangeOrderStatus(req.body).then((response)=>{
-    res.json(response)
-  })
-
-})
-router.post('/changePaymentStatus',(req,res)=>{
-  console.log(req.body);
-  adminHelper.changePaymentStatus(req.body).then((response)=>{
-    res.json(response)
-  })
-})
+router.post("/changeStatus", (req, res) => {
+  adminHelper.ChangeOrderStatus(req.body).then((response) => {
+    res.json(response);
+  });
+});
+router.post("/changePaymentStatus", (req, res) => {
+  adminHelper.changePaymentStatus(req.body).then((response) => {
+    res.json(response);
+  });
+});
 module.exports = router;
