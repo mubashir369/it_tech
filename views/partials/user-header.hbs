@@ -1,3 +1,4 @@
+
 <header class="header_section">
   <div class="header_top">
     <div class="container-fluid">
@@ -15,7 +16,7 @@
         {{#if login}}
 
         <from class="search_form">
-          <input type="text" class="form-control" placeholder="Search here..." />
+          <input type="text" class="form-control" id="search-item" onkeyup="search()" placeholder="Search here..." />
           <button class="" type="submit">
             <i class="fa fa-search" aria-hidden="true"></i>
           </button>
