@@ -188,7 +188,10 @@ router.get("/dashboard", async (req, res) => {
     let pendingAmt = await adminHelper.getPendingAmt();
     let penOrder = await adminHelper.getPenOrder();
     let totelRecivedAmt = totelSale - pendingAmt;
-    let dayReport=await adminHelper.getDayReport();
+    //let dayReport=await adminHelper.getDayReport();
+    let latestOrders=await adminHelper.getLatestOrders();
+   
+    console.log(latestOrders);
     let dashboard = {
       usrcount: numberOfUsers,
       totelSale: totelSale,
@@ -198,7 +201,7 @@ router.get("/dashboard", async (req, res) => {
     };
     //let totelSale=await adminHelper.getTotalSale();
 
-    res.render("admin/dashboard", { admin: true, dashboard });
+    res.render("admin/dashboard", { admin: true, dashboard,latestOrders });
   } else {
     res.redirect("/admin");
   }

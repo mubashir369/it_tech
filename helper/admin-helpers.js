@@ -57,6 +57,18 @@ module.exports = {
         });
     });
   },
+  getLatestOrders:()=>{
+return new Promise(async(resolve,reject)=>{
+  let orders = await db
+  .get()
+  .collection(collection.ORDER_COLLECTION)
+  .find({}).sort({date:-1}).limit(4)
+  .toArray()
+  resolve(orders)
+  
+
+})
+  },
   getOrderDetails: (orderId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -173,5 +185,5 @@ module.exports = {
       resolve(penOrder);
     });
   },
-
+  
 };
