@@ -1,4 +1,4 @@
-const { reject } = require("bcrypt/promises");
+
 const async = require("hbs/lib/async");
 const { ObjectId } = require("mongodb");
 const collection = require("../config/collection");
@@ -6,14 +6,13 @@ var db = require("../config/connection");
 var objectId = require("mongodb").ObjectID;
 module.exports = {
   addProduct: (product, callback) => {
-    console.log("@@@@@@@@@@@@@@@@@@@" + product.price);
+  
     product.price = parseInt(product.price);
     db.get()
       .collection("product")
       .insertOne(product)
       .then((data) => {
-        console.log("datad is jnjkjdndjnv" + data);
-        console.log("this is the id" + data.insertedId);
+       
         callback(data.insertedId);
       });
   },
@@ -109,8 +108,7 @@ module.exports = {
       }else{
         db.get().collection(collection.PRODUCT_COLLECTION).find({brand:brand}).toArray().then((data)=>{
           resolve(data)
-          console.log("daaaaaaaaaaaaaaaaaaaaaaata");
-          console.log(data);
+         
         })
 
       }

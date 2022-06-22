@@ -1,7 +1,5 @@
 var express = require("express");
-const { redirect } = require("express/lib/response");
-const async = require("hbs/lib/async");
-const { render } = require("../app");
+
 var router = express.Router();
 var productHelper = require("../helper/product-helpers");
 var userHelper = require("../helper/user-helpers");

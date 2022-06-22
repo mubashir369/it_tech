@@ -38,13 +38,6 @@ router.get("/add-product", (req, res) => {
   }
 });
 
-router.get("/adminSignup", (req, res) => {
-  res.render("admin/adminSignup");
-});
-router.post("/adminSignup", (req, res) => {
-  console.log(req.body);
-  adminHelper.adminSignup(req.body);
-});
 router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/admin");

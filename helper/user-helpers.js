@@ -4,14 +4,8 @@ var bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const async = require("hbs/lib/async");
 const { ObjectId } = require("mongodb");
-const { reject } = require("bcrypt/promises");
-const { CART_COLLECTION } = require("../config/collection");
-const { log } = require("handlebars");
-const { response, route } = require("../app");
-const { status } = require("express/lib/response");
 const otpGenerator = Math.floor(1000 + Math.random() * 9000);
 const Razorpay = require("razorpay");
-const { resolve } = require("node:path");
 var instance = new Razorpay({
   key_id: "rzp_test_jUspqW6Y2QXpgt",
   key_secret: "SkbvbAXD9jYzaqaluLNZdxIk",
@@ -151,12 +145,10 @@ module.exports = {
   varifyMailForgot: (otp) => {
     return new Promise((resolve, reject) => {
       if (otp == mysession.OTP) {
-        console.log("OTP is " + mysession.OTP);
-        console.log("otp matched");
+       
         resolve({ user: mysession.userData });
       } else {
-        console.log("otp not matched");
-        console.log("OTP is " + mysession.OTP);
+       
         resolve({ user: false, userData: mysession.userData });
       }
     });

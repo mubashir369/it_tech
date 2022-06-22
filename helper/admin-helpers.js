@@ -1,10 +1,6 @@
 var db = require("../config/connection");
 var collection = require("../config/collection");
-const async = require("hbs/lib/async");
 const bcrypt = require("bcrypt");
-const { response } = require("../app");
-const { reject } = require("bcrypt/promises");
-const { log } = require("handlebars");
 var objectId = require("mongodb").ObjectID;
 module.exports = {
   adminSignup: (adminData) => {
@@ -57,17 +53,17 @@ module.exports = {
         });
     });
   },
-  getLatestOrders:()=>{
-return new Promise(async(resolve,reject)=>{
-  let orders = await db
-  .get()
-  .collection(collection.ORDER_COLLECTION)
-  .find({}).sort({date:-1}).limit(4)
-  .toArray()
-  resolve(orders)
-  
-
-})
+  getLatestOrders: () => {
+    return new Promise(async (resolve, reject) => {
+      let orders = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .find({})
+        .sort({ date: -1 })
+        .limit(4)
+        .toArray();
+      resolve(orders);
+    });
   },
   getOrderDetails: (orderId) => {
     return new Promise((resolve, reject) => {
@@ -126,8 +122,7 @@ return new Promise(async(resolve,reject)=>{
         .get()
         .collection(collection.USER_COLLECTION)
         .countDocuments();
-      console.log("usrCount******************************");
-      console.log(usrCount);
+
       resolve(usrCount);
     });
   },
@@ -148,7 +143,6 @@ return new Promise(async(resolve,reject)=>{
 
       if (totel[0]) {
         resolve(totel[0].totel);
-        console.log(totel[0].totel);
       } else {
         resolve({ totel: null });
       }
@@ -169,8 +163,7 @@ return new Promise(async(resolve,reject)=>{
           },
         ])
         .toArray();
-      console.log("4444444444444444444444444444444444444444444444444444");
-      console.log(totel[0].totel);
+
       resolve(totel[0].totel);
     });
   },
@@ -185,5 +178,4 @@ return new Promise(async(resolve,reject)=>{
       resolve(penOrder);
     });
   },
-  
 };
