@@ -18,7 +18,7 @@
         position: absolute;
         top: 5%;
         right: 5%;
-        z-index:1 ;
+        z-index: 1;
     }
 
     .card-wrapper {
@@ -254,11 +254,12 @@
 <script type="text/javascript" src="/javascripts/magiczoomplus.js"></script>
 
 <body>
-
+   
     <div class="card-wrapper">
-        
+
         <div class="card">
-            
+
+
             <!-- card left -->
             <div class="product-imgs">
                 <div class="img-display">
@@ -291,7 +292,7 @@
             <!-- card right -->
 
             <div class="product-content">
-               <!-- {{#if fav}}
+                <!-- {{#if fav}}
                 <span id="fav"> <a href="/fav/{{product._id}}"><img style="width: 30px;" src="/images/red.png" alt=""></a></span>
 
                 {{else}}
@@ -302,7 +303,7 @@
 
 
                 <div class="product-rating">
-                   <!-- <i class="fas fa-star"></i>
+                    <!-- <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -333,15 +334,15 @@
                 <div class="purchase-info d-inline">
                     <div>
                         {{#if user}}
-                        <a href="/add-to-cart/{{product._id}}" onClick="alert('{{product.name}} added to Your Cart')"
+                        <a  onClick="addToCart()"
                             class="btn btn-primary">Add to Cart</a>
                         {{else}}
-                        <a href="/add-to-cart/{{product._id}}" onClick="alert('Please Loging to Your Account')"
+                        <a href="#" onClick="loginPopup();"
                             class="btn btn-primary">Add to Cart</a>
                         {{/if}}
 
                     </div>
-                    
+
                 </div>
 
 
@@ -350,6 +351,20 @@
     </div>
 
     <script>
+        async function addToCart(){
+            await await swal("Good job!", "{{product.name}} Added to Your Cart !", "success");
+            location.href="/add-to-cart/{{product._id}}"
+        }
+        async function loginPopup(){
+            await swal("Oops!", "Please Login to Your Accound", "info");
+             location.href = '/login'
+        }
+        let alert=document.getElementById('alert')
+        alert.style.display='none'
+        function loginalert(){
+            
+            alert.style.display=''
+        }
 
 
 

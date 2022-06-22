@@ -16,23 +16,25 @@
           <div class="col-md-6 mb-5 mb-md-0" id="divv">
             <h2 class="h3 mb-3 text-black">Billing Details</h2>
             <div class="p-3 p-lg-5 border">
-              
+
               <div class="form-group row">
-                
+
                 <input type="text" name="userId" value="{{user._id}}" hidden>
-                  <input type="text" name="CartTotel" value='{{totel}}' hidden>
+                <input type="text" name="CartTotel" value='{{totel}}' hidden>
               </div>
-               <div class="form-group row">
+              <div class="form-group row">
                 <div class="col-md-12">
-                  <label for="c_address" class="text-black">Name <span class="text-danger" >*</span></label>
-                  <input type="text" class="form-control" id="c_address" name="fname" placeholder="Street address" required>
+                  <label for="c_address" class="text-black">Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="c_address" name="fname" placeholder="Street address"
+                    required>
                 </div>
               </div>
 
               <div class="form-group row">
                 <div class="col-md-12">
-                  <label for="c_address" class="text-black">Address <span class="text-danger" >*</span></label>
-                  <input type="text" class="form-control" id="c_address" name="address" placeholder="Street address" required>
+                  <label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="c_address" name="address" placeholder="Street address"
+                    required>
                 </div>
               </div>
 
@@ -42,8 +44,7 @@
 
               <div class="form-group row">
                 <div class="col-md-6">
-                  <label for="c_state_country" class="text-black">State<span
-                      class="text-danger">*</span></label>
+                  <label for="c_state_country" class="text-black">State<span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="c_state_country" required name="state">
                 </div>
                 <div class="col-md-6">
@@ -88,18 +89,17 @@
                       </tr>
                     </tbody>
                   </table>
-                   <div class="form-group">
-                <label for="c_country" class="text-black">Select Payment Type <span class="text-danger">*</span></label>
-                <select id="c_country" name="payment" class="form-control" required >
-                  <option value="">Select Payment Type</option>    
-                  <option value="COD">Cash On Delivery</option>    
-                  <option value="Online">Online Payment</option>    
-                    
-                </select>
-              </div>
                   <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg py-3 btn-block"
-                     >Place Order</button>
+                    <label for="c_country" class="text-black">Select Payment Type <span
+                        class="text-danger">*</span></label>
+                    <select id="c_country" name="payment" class="form-control" required>
+                      <option value="">Select Payment Type</option>
+                      <option value="COD">Cash On Delivery</option>
+                      <option value="Online">Online Payment</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg py-3 btn-block">Place Order</button>
                   </div>
 
                 </div>
@@ -124,64 +124,67 @@
       method: 'post',
       data: $('#checkOut').serialize(),
       success: (response) => {
-        alert(response)
-        if(response.cod){
-          location.href='/thankYou'
-        }else{
-          razorpayPayment(response)
-
+        success(response)
+        async function success(response) {
+          await swal("Good job!", "Your Order Submited Successfully!", "success");
+          if (response.cod) {
+            location.href = '/thankYou'
+          } else {
+            razorpayPayment(response)
+          }
         }
       }
     })
   })
-function razorpayPayment(order){
+  function razorpayPayment(order) {
 
-  var options = {
-    "key": "rzp_test_jUspqW6Y2QXpgt", // Enter the Key ID generated from the Dashboard
-    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "Mobiles",
-    "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
-    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function (response){
-    
-        varifyPayment(response,order)
-    },
-    "prefill": {
+    var options = {
+      "key": "rzp_test_jUspqW6Y2QXpgt", // Enter the Key ID generated from the Dashboard
+      "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "Mobiles",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response) {
+
+        varifyPayment(response, order)
+      },
+      "prefill": {
         "name": "Gaurav Kumar",
         "email": "gaurav.kumar@example.com",
         "contact": "9999999999"
-    },
-    "notes": {
+      },
+      "notes": {
         "address": "Razorpay Corporate Office"
-    },
-    "theme": {
+      },
+      "theme": {
         "color": "#3399cc"
-    }
-};
-var rzp1 = new Razorpay(options);
- rzp1.open();
-
-}
-function varifyPayment(payment,order){
-  $.ajax({
-    url:'/verify-payment',
-    method:'post',
-    data:{
-      payment,
-      order
-    },
-    success:(response)=>{
-      if(response.status){
-         location.href='/thankYou'
-      }else{
-        alert("Payment Filed")
       }
-    }
-  })
-}
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
 
-  
+  }
+  function varifyPayment(payment, order) {
+    $.ajax({
+      url: '/verify-payment',
+      method: 'post',
+      data: {
+        payment,
+        order
+      },
+      success: (response) => {
+location.href = '/thankYou'
+        /*if (response.status) {
+          
+        } else {
+
+        }*/
+      }
+    })
+  }
+
+
 
 </script>

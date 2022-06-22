@@ -364,4 +364,8 @@ router.get('/cancel-order/:id',async(req,res)=>{
     res.redirect('user/all-products',{product})
   })
 })*/
+router.get('/about',(req,res)=>{
+  res.render('user/about')
+
+})
 module.exports = router;
