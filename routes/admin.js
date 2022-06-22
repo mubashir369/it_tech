@@ -1,8 +1,8 @@
 const express = require("express");
 const res = require("express/lib/response");
-const { redirect } = require("express/lib/response");
+
 const async = require("hbs/lib/async");
-const { render, response } = require("../app");
+
 var router = express.Router();
 var adminHelper = require("../helper/admin-helpers");
 var productHelper = require("../helper/product-helpers");
@@ -11,7 +11,7 @@ const userHelper = require("../helper/user-helpers");
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   if (req.session.admin) {
-    res.redirect("/admin//dashboard");
+    res.redirect("/admin/dashboard");
   } else {
     res.render("admin/adminLogin", { admin: true, logErr: req.session.logErr });
   }
@@ -38,13 +38,13 @@ router.get("/add-product", (req, res) => {
   }
 });
 
-/*router.get("/adminSignup", (req, res) => {
+router.get("/adminSignup", (req, res) => {
   res.render("admin/adminSignup");
 });
 router.post("/adminSignup", (req, res) => {
   console.log(req.body);
   adminHelper.adminSignup(req.body);
-});*/
+});
 router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/admin");
@@ -183,25 +183,25 @@ router.post("/edit-user/:id", (req, res) => {
 });
 router.get("/dashboard", async (req, res) => {
   if (req.session.admin) {
-    let numberOfUsers = await adminHelper.getNumberOfUsers();
-    let totelSale = await adminHelper.getTotelSale();
-    let pendingAmt = await adminHelper.getPendingAmt();
-    let penOrder = await adminHelper.getPenOrder();
-    let totelRecivedAmt = totelSale - pendingAmt;
-    //let dayReport=await adminHelper.getDayReport();
-    let latestOrders=await adminHelper.getLatestOrders();
+    // let numberOfUsers = await adminHelper.getNumberOfUsers();
+    // let totelSale = await adminHelper.getTotelSale();
+    // let pendingAmt = await adminHelper.getPendingAmt();
+    // let penOrder = await adminHelper.getPenOrder();
+    // let totelRecivedAmt = totelSale - pendingAmt;
+    // //let dayReport=await adminHelper.getDayReport();
+    // let latestOrders=await adminHelper.getLatestOrders();
    
-    console.log(latestOrders);
-    let dashboard = {
-      usrcount: numberOfUsers,
-      totelSale: totelSale,
-      penAmt: pendingAmt,
-      penOrder: penOrder,
-      totelRecivedAmt: totelRecivedAmt,
-    };
+    // console.log(latestOrders);
+    // let dashboard = {
+    //   usrcount: numberOfUsers,
+    //   totelSale: totelSale,
+    //   penAmt: pendingAmt,
+    //   penOrder: penOrder,
+    //   totelRecivedAmt: totelRecivedAmt,
+    // };
     //let totelSale=await adminHelper.getTotalSale();
 
-    res.render("admin/dashboard", { admin: true, dashboard,latestOrders });
+    res.render("admin/dashboard", { admin: true });
   } else {
     res.redirect("/admin");
   }
