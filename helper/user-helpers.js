@@ -252,6 +252,7 @@ module.exports = {
       .collection(collection.PRODUCT_COLLECTION)
       .findOne({ _id: ObjectId(proId) });
     let pertotel = totelobj.price;
+    pertotel=parseInt(pertotel)
     let proObj = {
       item: ObjectId(proId),
       quantity: 1,
