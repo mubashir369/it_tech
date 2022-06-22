@@ -251,7 +251,7 @@
     }
 </style>
 <link type="text/css" rel="stylesheet" href="/stylesheets/magiczoomplus.css" />
-<script type="text/javascript" src="/javascripts/magiczoomplus.js"></script>
+
 
 <body>
    
@@ -349,10 +349,35 @@
             </div>
         </div>
     </div>
+<script type="text/javascript" src="/javascripts/magiczoomplus.js"></script>
+ <script>
+
+
+
+        const imgs = document.querySelectorAll('.img-select a');
+        const imgBtns = [...imgs];
+        let imgId = 1;
+
+        imgBtns.forEach((imgItem) => {
+            imgItem.addEventListener('click', (event) => {
+                event.preventDefault();
+                imgId = imgItem.dataset.id;
+                slideImage();
+            });
+        });
+
+        function slideImage() {
+            const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+
+            document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
+        }
+
+        window.addEventListener('resize', slideImage);
+    </script>
 
     <script>
         async function addToCart(){
-            await await swal("Good job!", "{{product.name}} Added to Your Cart !", "success");
+            await swal("Good job!", "{{product.name}} Added to Your Cart !", "success");
             location.href="/add-to-cart/{{product._id}}"
         }
         async function loginPopup(){
