@@ -225,13 +225,20 @@ router.get("/fav/:id", (req, res) => {
 });
 router.get("/orders", async (req, res) => {
   if (req.session.user) {
-    let Pending=false
+    let status = {
+      Pending: false,
+      payment: false,
+    };
+
     let Orders = await userHelper.getUserOrders(req.session.user._id);
-    if(Orders.status=="Pending"){
-      Pending=true
+    if (Orders.status == "Pending") {
+      status.Pending = true;
+      if (Orders.payment == "Online") {
+        status.payment = true;
+      }
     }
 
-    res.render("user/orders", {Orders,Pending});
+    res.render("user/orders", { Orders, status });
   } else {
     res.redirect("/login");
   }
@@ -245,13 +252,20 @@ router.get("/user/view-order-product/:id", async (req, res) => {
       Pending: null,
       Shipped: null,
       Delivered: null,
+      ReadyToShipp: null,
+      payment: false,
     };
     if (order.status == "Pending") {
       status.Pending = true;
+      if (order.payment == "Online") {
+        status.payment = true;
+      }
     } else if (order.status == "Shipped") {
       status.Shipped = true;
     } else if (order.status == "Delivered") {
       status.Delivered = true;
+    } else if (order.status == "ReadyToShipp") {
+      status.ReadyToShipp = true;
     }
     res.render("user/view-order-products", { products, order, status });
   });
@@ -285,9 +299,8 @@ router.get("/edit-user", async (req, res) => {
   }
 });
 router.post("/edit-user", (req, res) => {
- 
   userHelper.updateUser(req.session.user._id, req.body).then((data) => {
-      res.redirect("/user-profile");
+    res.redirect("/user-profile");
   });
 });
 router.get("/change-password", (req, res) => {
@@ -334,25 +347,23 @@ router.post("/make-payment-now", (req, res) => {
   if (req.session.user) {
     console.log(req.body);
     userHelper
-    .generateRazorpay(req.body.orderId,req.body.totel)
-    .then((response) => {
-      res.json(response);
+      .generateRazorpay(req.body.orderId, req.body.totel)
+      .then((response) => {
+        res.json(response);
+      });
+  } else {
+    res.redirect("/login");
+  }
+});
+router.get("/cancel-order/:id", async (req, res) => {
+  if (req.session.user) {
+    userHelper.cancelOrder(req.params.id).then(() => {
+      res.redirect("/orders");
     });
   } else {
     res.redirect("/login");
   }
 });
-router.get('/cancel-order/:id',async(req,res)=>{
-  
-  if(req.session.user){
-    userHelper.cancelOrder(req.params.id).then(()=>{
-      res.redirect('/orders')
-    })
-    
-  }else{
-    res.redirect('/login')
-  }
-})
 /*router.post('/customer-choise',(req,res)=>{
   console.log("4555555555555555555555555555555");
   console.log(req.body.brand);
@@ -362,8 +373,7 @@ router.get('/cancel-order/:id',async(req,res)=>{
     res.redirect('user/all-products',{product})
   })
 })*/
-router.get('/about',(req,res)=>{
-  res.render('user/about')
-
-})
+router.get("/about", (req, res) => {
+  res.render("user/about");
+});
 module.exports = router;
