@@ -176,17 +176,14 @@ router.post("/edit-user/:id", (req, res) => {
 });
 router.get("/dashboard", async (req, res) => {
   if (req.session.admin) {
-    let dashboard = {};
-    dashboard.usrcount=await adminHelper.getNumberOfUsers();
-    dashboard.totelSale=await adminHelper.getTotelSale();
-   dashboard.penAmt=await adminHelper.getPendingAmt();
-   dashboard.penOrder= await adminHelper.getPenOrder();
-   dashboard.totelRecivedAmt=dashboard.totelSale-dashboard.penAmt;
-   dashboard.latestOrders = await adminHelper.getLatestOrders()
-    //let dayReport=await adminHelper.getDayReport();
-    
-
-    res.render("admin/dashboard", { admin: true, dashboard});
+    // let dashboard = {};
+    // dashboard.usrcount = await adminHelper.getNumberOfUsers();
+    // dashboard.totelSale = await adminHelper.getTotelSale();
+    // dashboard.penAmt = await adminHelper.getPendingAmt();
+    // dashboard.penOrder = await adminHelper.getPenOrder();
+    // dashboard.totelRecivedAmt = dashboard.totelSale - dashboard.penAmt;
+    // dashboard.latestOrders = await adminHelper.getLatestOrders();
+    res.render("admin/dashboard", { admin: true,});
   } else {
     res.redirect("/admin");
   }
