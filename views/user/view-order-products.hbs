@@ -109,11 +109,7 @@
             {{/each}}
 
             <div class="row d-flex align-items-center">
-              {{#if status.payment}}
-              <div class="alert alert-warning text-center" role="alert">
-                <b> Waiting For Payment !</b>
-              </div>
-              {{/if}}
+              
               <div class="col-md-2">
                 <p class="text-muted mb-0 small">Track Order</p>
               </div>
@@ -160,6 +156,9 @@
               <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free</p>
             </div>
             {{#if status.Pending}}
+                <div class="alert alert-warning text-center" role="alert">
+                <b> Waiting For Payment !</b>
+              </div>
             <div class="d-flex justify-content-between mt-3">
 
               <button onclick="payment('{{order._id}}','{{order.totel}}')" class="btn btn-outline-primary">Make Payment
