@@ -148,34 +148,34 @@ module.exports = {
       }
     });
   },
- getPendingAmt: () => {
-    return new Promise(async (resolve, reject) => {
-      let totel = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .aggregate([
-          { $match: { status: "Pending" } },
-          {
-            $group: {
-              _id: null,
-              totel: { $sum: "$totel" },
-            },
-          },
-        ])
-        .toArray();
+//  getPendingAmt: () => {
+//     return new Promise(async (resolve, reject) => {
+//       let totel = await db
+//         .get()
+//         .collection(collection.ORDER_COLLECTION)
+//         .aggregate([
+//           { $match: { status: "Pending" } },
+//           {
+//             $group: {
+//               _id: null,
+//               totel: { $sum: "$totel" },
+//             },
+//           },
+//         ])
+//         .toArray();
 
-      resolve(totel[0].totel);
-    });
-  },
-  getPenOrder: () => {
-    return new Promise(async (resolve, reject) => {
-      let penOrder = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .find({ status: "Pending" })
-        .count();
+//       resolve(totel[0].totel);
+//     });
+//   },
+//   getPenOrder: () => {
+//     return new Promise(async (resolve, reject) => {
+//       let penOrder = await db
+//         .get()
+//         .collection(collection.ORDER_COLLECTION)
+//         .find({ status: "Pending" })
+//         .count();
 
-      resolve(penOrder);
-    });
-  },
+//       resolve(penOrder);
+//     });
+//   },
 };
