@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
     if (response.status) {
       req.session.adminlogin = true;
       req.session.admin = response.admin;
-      res.redirect("/admin/view-product");
+      res.redirect("/admin/dashboard");
     } else {
       req.session.logErr = "Invalid Username Or Password";
       console.log("admin log in filed");
