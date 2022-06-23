@@ -183,7 +183,7 @@ router.get("/dashboard", async (req, res) => {
     dashboard.penOrder = await adminHelper.getPenOrder();
     dashboard.totelRecivedAmt = dashboard.totelSale - dashboard.penAmt;
     dashboard.latestOrders = await adminHelper.getLatestOrders();
-    res.render("admin/dashboard", { admin: true,});
+    res.render("admin/dashboard", { admin: true,dashboard});
   } else {
     res.redirect("/admin");
   }
