@@ -148,7 +148,7 @@ module.exports = {
       }
     });
   },
-/*  getPendingAmt: () => {
+ getPendingAmt: () => {
     return new Promise(async (resolve, reject) => {
       let totel = await db
         .get()
@@ -166,7 +166,7 @@ module.exports = {
 
       resolve(totel[0].totel);
     });
-  },*/
+  },
   getPenOrder: () => {
     return new Promise(async (resolve, reject) => {
       let penOrder = await db
