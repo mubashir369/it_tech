@@ -253,7 +253,7 @@ router.get("/user/view-order-product/:id", async (req, res) => {
       Shipped: null,
       Delivered: null,
       ReadyToShipp: null,
-      payment: false,
+      payment: null,
     };
     if (order.status == "Pending") {
       status.Pending = true;
