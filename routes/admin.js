@@ -176,30 +176,23 @@ router.post("/edit-user/:id", (req, res) => {
 });
 router.get("/dashboard", async (req, res) => {
   if (req.session.admin) {
-    let totelSale = await adminHelper.getTotelSale();
-    if (totelSale) {
-      let numberOfUsers = await adminHelper.getNumberOfUsers();
+    // let totelSale = await adminHelper.getTotelSale();
+    // let numberOfUsers = await adminHelper.getNumberOfUsers();
+    // let pendingAmt = await adminHelper.getPendingAmt();
+    // let penOrder = await adminHelper.getPenOrder();
+    // let totelRecivedAmt = totelSale - pendingAmt;
+    // //let dayReport=await adminHelper.getDayReport();
+    // let latestOrders = await adminHelper.getLatestOrders();
+    // console.log(latestOrders);
+    // let dashboard = {
+    //   usrcount: numberOfUsers,
+    //   totelSale: totelSale,
+    //   penAmt: pendingAmt,
+    //   penOrder: penOrder,
+    //   totelRecivedAmt: totelRecivedAmt,
+    // };
 
-      let pendingAmt = await adminHelper.getPendingAmt();
-      let penOrder = await adminHelper.getPenOrder();
-      let totelRecivedAmt = totelSale - pendingAmt;
-      //let dayReport=await adminHelper.getDayReport();
-      let latestOrders = await adminHelper.getLatestOrders();
-
-      console.log(latestOrders);
-      let dashboard = {
-        usrcount: numberOfUsers,
-        totelSale: totelSale,
-        penAmt: pendingAmt,
-        penOrder: penOrder,
-        totelRecivedAmt: totelRecivedAmt,
-      };
-
-      res.render("admin/dashboard", { admin: true, latestOrders, dashboard });
-    }else{
-      res.render("admin/dashboard", { admin: true,});
-
-    }
+    res.render("admin/dashboard", { admin: true,});
   } else {
     res.redirect("/admin");
   }
