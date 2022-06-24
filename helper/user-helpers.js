@@ -17,233 +17,268 @@ module.exports = {
   //******************************************************OTP****************************** */
   userSignUp: (userData) => {
     return new Promise(async (resolve, reject) => {
-      let ExistEmail = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .findOne({ email: userData.email });
-      let ExistUser = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .findOne({ name: userData.name });
-      if (ExistEmail) {
-        resolve({ status: false, message: "Email already exist" });
-      } else if (ExistUser) {
-        resolve({ status: false, message: "Username already exist" });
-      } else {
-        userData.password = await bcrypt.hash(userData.password, 10);
-        mysession.userData = userData;
-        let name = userData.name;
-        let email = userData.email;
+      try {
+        let ExistEmail = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ email: userData.email });
+        let ExistUser = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ name: userData.name });
+        if (ExistEmail) {
+          resolve({ status: false, message: "Email already exist" });
+        } else if (ExistUser) {
+          resolve({ status: false, message: "Username already exist" });
+        } else {
+          userData.password = await bcrypt.hash(userData.password, 10);
+          mysession.userData = userData;
+          let name = userData.name;
+          let email = userData.email;
 
-        try {
-          const mailTransporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            service: "gmail",
-            port: 465,
-            secure: true,
-            auth: {
-              user: "meuse685@gmail.com",
-              pass: "rzpwououaupnbjac",
-            },
-            tls: {
-              rejectUnauthorized: false,
-            },
-          });
+          try {
+            const mailTransporter = nodemailer.createTransport({
+              host: "smtp.gmail.com",
+              service: "gmail",
+              port: 465,
+              secure: true,
+              auth: {
+                user: "meuse685@gmail.com",
+                pass: "rzpwououaupnbjac",
+              },
+              tls: {
+                rejectUnauthorized: false,
+              },
+            });
 
-          const mailDetails = {
-            from: "meuse685@gmail.com",
-            to: email,
-            subject: "for user verification",
-            text: "just random texts ",
-            html: "<p>hi " + name + " your OTP is" + otpGenerator + "",
-          };
-          mailTransporter.sendMail(mailDetails, (err, Info) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("email has been sent ", Info.response);
-            }
-          });
+            const mailDetails = {
+              from: "meuse685@gmail.com",
+              to: email,
+              subject: "for user verification",
+              text: "just random texts ",
+              html: "<p>hi " + name + " your OTP is" + otpGenerator + "",
+            };
+            mailTransporter.sendMail(mailDetails, (err, Info) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("email has been sent ", Info.response);
+              }
+            });
 
-          resolve({ status: true });
-        } catch (error) {
-          console.log(error.message);
+            resolve({ status: true });
+          } catch (error) {
+            console.log(error.message);
+          }
         }
+      } catch {
+        reject();
       }
     });
   },
   varifyMail: (otp) => {
     return new Promise(async (resolve, reject) => {
-      if (otp == mysession.OTP) {
-        try {
-          const user = await db
-            .get()
-            .collection(collection.USER_COLLECTION)
-            .insertOne(mysession.userData);
-          resolve({ user });
-        } catch (error) {
-          console.log(error.message);
+      try {
+        if (otp == mysession.OTP) {
+          try {
+            const user = await db
+              .get()
+              .collection(collection.USER_COLLECTION)
+              .insertOne(mysession.userData);
+            resolve({ user });
+          } catch (error) {
+            console.log(error.message);
+          }
+        } else {
+          resolve({ user: false, userData: mysession.userData });
         }
-      } else {
-        resolve({ user: false, userData: mysession.userData });
+      } catch {
+        reject();
       }
     });
   },
 
   checkEmail: (email) => {
     return new Promise(async (resolve, reject) => {
-      let user = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .findOne({ email: email });
-      if (user) {
-        mysession.userData = user;
+      try {
+        let user = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ email: email });
+        if (user) {
+          mysession.userData = user;
 
-        try {
-          const mailTransporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            service: "gmail",
-            port: 465,
-            secure: true,
-            auth: {
-              user: "meuse685@gmail.com",
-              pass: "rzpwououaupnbjac",
-            },
-            tls: {
-              rejectUnauthorized: false,
-            },
-          });
+          try {
+            const mailTransporter = nodemailer.createTransport({
+              host: "smtp.gmail.com",
+              service: "gmail",
+              port: 465,
+              secure: true,
+              auth: {
+                user: "meuse685@gmail.com",
+                pass: "rzpwououaupnbjac",
+              },
+              tls: {
+                rejectUnauthorized: false,
+              },
+            });
 
-          const mailDetails = {
-            from: "meuse685@gmail.com",
-            to: email,
-            subject: "for user verification",
-            text: "just random texts ",
-            html:
-              "<p>hi " +
-              " your Generate new Password OTP is " +
-              mysession.OTP +
-              "",
-          };
-          mailTransporter.sendMail(mailDetails, (err, Info) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("email has been sent ", Info.response);
-            }
-          });
+            const mailDetails = {
+              from: "meuse685@gmail.com",
+              to: email,
+              subject: "for user verification",
+              text: "just random texts ",
+              html:
+                "<p>hi " +
+                " your Generate new Password OTP is " +
+                mysession.OTP +
+                "",
+            };
+            mailTransporter.sendMail(mailDetails, (err, Info) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("email has been sent ", Info.response);
+              }
+            });
 
-          resolve({ status: true, user });
-        } catch (error) {
-          console.log(error.message);
+            resolve({ status: true, user });
+          } catch (error) {
+            console.log(error.message);
+          }
+        } else {
+          resolve({ user: false });
         }
-      } else {
-        resolve({ user: false });
+      } catch {
+        reject();
       }
     });
   },
   varifyMailForgot: (otp) => {
     return new Promise((resolve, reject) => {
-      if (otp == mysession.OTP) {
-       
-        resolve({ user: mysession.userData });
-      } else {
-       
-        resolve({ user: false, userData: mysession.userData });
+      try {
+        if (otp == mysession.OTP) {
+          resolve({ user: mysession.userData });
+        } else {
+          resolve({ user: false, userData: mysession.userData });
+        }
+      } catch {
+        reject();
       }
     });
   },
   CreateNewPassword: (data) => {
     return new Promise(async (resolve, reject) => {
-      data.password = await bcrypt.hash(data.password, 10);
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .updateOne(
-          { _id: ObjectId(data.userId) },
-          { $set: { password: data.password } }
-        )
-        .then(() => {
-          resolve();
-        });
+      try {
+        data.password = await bcrypt.hash(data.password, 10);
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(data.userId) },
+            { $set: { password: data.password } }
+          )
+          .then(() => {
+            resolve();
+          });
+      } catch {
+        reject();
+      }
     });
   },
- 
+
   doLogin: (userData) => {
     return new Promise(async (resolve, reject) => {
-      let loginStatus = false;
-      let response = {};
-      let user = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .findOne({ name: userData.name });
-      if (user) {
-        bcrypt.compare(userData.password, user.password).then((status) => {
-          if (status) {
-         
-            response.user = user;
-            response.status = true;
-            resolve(response);
-          } else {
-         
-            resolve({ status: false });
-          }
-        });
-      } else {
-     
-        resolve({ status: false });
+      try {
+        let loginStatus = false;
+        let response = {};
+        let user = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ name: userData.name });
+        if (user) {
+          bcrypt.compare(userData.password, user.password).then((status) => {
+            if (status) {
+              response.user = user;
+              response.status = true;
+              resolve(response);
+            } else {
+              resolve({ status: false });
+            }
+          });
+        } else {
+          resolve({ status: false });
+        }
+      } catch {
+        reject();
       }
     });
   },
 
   getAllUsers: () => {
     return new Promise(async (resolve, reject) => {
-      let users = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .find()
-        .toArray();
-      resolve(users);
+      try {
+        let users = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .find()
+          .toArray();
+        resolve(users);
+      } catch {
+        reject();
+      }
     });
   },
   deleteUser: (usrId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .deleteOne({ _id: ObjectId(usrId) })
-        .then((response) => {
-          resolve(response);
-        });
+      try {
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .deleteOne({ _id: ObjectId(usrId) })
+          .then((response) => {
+            resolve(response);
+          });
+      } catch {
+        reject();
+      }
     });
   },
   getUser: (usrId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .findOne({ _id: ObjectId(usrId) })
-        .then((user) => {
-          resolve(user);
-        });
+      try {
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ _id: ObjectId(usrId) })
+          .then((user) => {
+            resolve(user);
+          });
+      } catch {
+        reject();
+      }
     });
   },
   updateUser: (usrId, usr) => {
     return new Promise(async (resolve, reject) => {
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .updateOne(
-          { _id: ObjectId(usrId) },
-          {
-            $set: {
-              name: usr.name,
-              fname: usr.fname,
-              lname: usr.lname,
-              email: usr.email,
-              number: usr.number,
-            },
-          }
-        )
-        .then(() => {
-          resolve();
-        });
+      try {
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(usrId) },
+            {
+              $set: {
+                name: usr.name,
+                fname: usr.fname,
+                lname: usr.lname,
+                email: usr.email,
+                number: usr.number,
+              },
+            }
+          )
+          .then(() => {
+            resolve();
+          });
+      } catch {
+        reject();
+      }
     });
   },
   addToCart: async (proId, usrId) => {
@@ -252,7 +287,7 @@ module.exports = {
       .collection(collection.PRODUCT_COLLECTION)
       .findOne({ _id: ObjectId(proId) });
     let pertotel = totelobj.price;
-    pertotel=parseInt(pertotel)
+    pertotel = parseInt(pertotel);
     let proObj = {
       item: ObjectId(proId),
       quantity: 1,
@@ -283,12 +318,8 @@ module.exports = {
         let proExist = userCart.products.findIndex(
           (product) => product.item == proId
         );
-    
+
         if (proExist != -1) {
-     
-
-          
-
           db.get()
             .collection(collection.CART_COLLECTION)
             .updateOne(
@@ -378,7 +409,7 @@ module.exports = {
         .get()
         .collection(collection.CART_COLLECTION)
         .findOne({ user: ObjectId(usrId) });
-     
+
       if (cart) {
         count = cart.products.length;
       }
@@ -574,7 +605,7 @@ module.exports = {
         totelAmound: oldTotel,
         discound: discound,
         gst: gst,
-        paymentStatus:"Not Paid",
+        paymentStatus: "Not Paid",
         totel: newTotel,
         date: today,
         time: Time,
@@ -717,8 +748,8 @@ module.exports = {
           { _id: ObjectId(orderId) },
           {
             $set: {
-              status:"Shipped",
-              paymentStatus:"Paid"
+              status: "Shipped",
+              paymentStatus: "Paid",
             },
           }
         )
@@ -736,7 +767,7 @@ module.exports = {
       bcrypt.compare(newPswData.oldpsw, usrId.password).then(async (status) => {
         if (status) {
           newPswData.newpsw = await bcrypt.hash(newPswData.newpsw, 10);
-       
+
           console.log(newPswData.newpsw);
           db.get()
             .collection(collection.USER_COLLECTION)
@@ -755,11 +786,14 @@ module.exports = {
       });
     });
   },
-  cancelOrder:(orderId)=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.ORDER_COLLECTION).deleteOne({_id:ObjectId(orderId)}).then(()=>{
-        resolve()
-      })
-    })
-  }
+  cancelOrder: (orderId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .deleteOne({ _id: ObjectId(orderId) })
+        .then(() => {
+          resolve();
+        });
+    });
+  },
 };

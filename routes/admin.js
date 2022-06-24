@@ -18,23 +18,31 @@ router.get("/", function (req, res, next) {
 });
 router.post("/", (req, res) => {
   console.log(req.body);
-  adminHelper.adminLogin(req.body).then((response) => {
-    if (response.status) {
-      req.session.adminlogin = true;
-      req.session.admin = response.admin;
-      res.redirect("/admin/dashboard");
-    } else {
-      req.session.logErr = "Invalid Username Or Password";
-      console.log("admin log in filed");
-      res.redirect("/admin");
-    }
-  });
+  try {
+    adminHelper.adminLogin(req.body).then((response) => {
+      if (response.status) {
+        req.session.adminlogin = true;
+        req.session.admin = response.admin;
+        res.redirect("/admin/dashboard");
+      } else {
+        req.session.logErr = "Invalid Username Or Password";
+        console.log("admin log in filed");
+        res.redirect("/admin");
+      }
+    });
+  } catch {
+    res.render("user/404");
+  }
 });
 router.get("/add-product", (req, res) => {
-  if (req.session.admin) {
-    res.render("admin/add-product", { admin: true });
-  } else {
-    res.redirect("/admin");
+  try {
+    if (req.session.admin) {
+      res.render("admin/add-product", { admin: true });
+    } else {
+      res.redirect("/admin");
+    }
+  } catch {
+    res.render("user/404");
   }
 });
 
@@ -175,17 +183,23 @@ router.post("/edit-user/:id", (req, res) => {
   });
 });
 router.get("/dashboard", async (req, res) => {
-  if (req.session.admin) {
-    let dashboard = {};
-    dashboard.usrcount = await adminHelper.getNumberOfUsers();
-    dashboard.totelSale = await adminHelper.getTotelSale();
-    dashboard.penAmt = await adminHelper.getPendingAmt();
-    dashboard.penOrder = await adminHelper.getPenOrder();
-    dashboard.totelRecivedAmt = dashboard.totelSale - dashboard.penAmt;
-    dashboard.latestOrders = await adminHelper.getLatestOrders();
-    res.render("admin/dashboard", { admin: true,dashboard});
-  } else {
-    res.redirect("/admin");
+  try {
+    if (req.session.admin) {
+      let dashboard = {};
+      dashboard.usrcount = await adminHelper.getNumberOfUsers();
+      dashboard.totelSale = await adminHelper.getTotelSale();
+      dashboard.penAmt = await adminHelper.getPendingAmt().catch(() => {
+        res.render("admin/404", { admin: true });
+      });
+      dashboard.penOrder = await adminHelper.getPenOrder();
+      dashboard.totelRecivedAmt = dashboard.totelSale - dashboard.penAmt;
+      dashboard.latestOrders = await adminHelper.getLatestOrders();
+      res.render("admin/dashboard", { admin: true, dashboard });
+    } else {
+      res.redirect("/admin");
+    }
+  } catch {
+    res.render("admin/404");
   }
 });
 router.get("/view-orders", (req, res) => {

@@ -5,176 +5,219 @@ var objectId = require("mongodb").ObjectID;
 module.exports = {
   adminSignup: (adminData) => {
     return new Promise(async (resolve, reject) => {
-      adminData.password = await bcrypt.hash(adminData.password, 10);
-      db.get()
-        .collection(collection.ADMIN)
-        .insertOne(adminData)
-        .then((data) => {
-          resolve(data);
-        });
+      try {
+        adminData.password = await bcrypt.hash(adminData.password, 10);
+        db.get()
+          .collection(collection.ADMIN)
+          .insertOne(adminData)
+          .then((data) => {
+            resolve(data);
+          });
+      } catch {
+        reject();
+      }
     });
   },
   adminLogin: (adminData) => {
     return new Promise(async (resolve, reject) => {
-      let adminLoginStatus = false;
-      let response = {};
-      let admin = await db
-        .get()
-        .collection(collection.ADMIN)
-        .findOne({ name: adminData.name });
-      console.log("admin data " + admin);
-      if (admin) {
-        bcrypt.compare(adminData.password, admin.password).then((status) => {
-          if (status) {
-            console.log("admin log i success");
-            response.admin = admin;
-            response.status = true;
-            resolve(response);
-          } else {
-            console.log("log in failed");
-            resolve({ status: false });
-          }
-        });
-      } else {
-        console.log("admin username failed");
-        resolve({ status: false });
+      try {
+        let adminLoginStatus = false;
+        let response = {};
+        let admin = await db
+          .get()
+          .collection(collection.ADMIN)
+          .findOne({ name: adminData.name });
+        console.log("admin data " + admin);
+        if (admin) {
+          bcrypt.compare(adminData.password, admin.password).then((status) => {
+            if (status) {
+              console.log("admin log i success");
+              response.admin = admin;
+              response.status = true;
+              resolve(response);
+            } else {
+              console.log("log in failed");
+              resolve({ status: false });
+            }
+          });
+        } else {
+          console.log("admin username failed");
+          resolve({ status: false });
+        }
+      } catch {
+        reject();
       }
     });
   },
   getAllOrders: () => {
-    return new Promise(async (resolve, reject) => {
-      let orders = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .find({})
-        .toArray()
-        .then((data) => {
-          resolve(data);
-        });
+    return new Promise((resolve, reject) => {
+      try {
+        db.get()
+          .collection(collection.ORDER_COLLECTION)
+          .find({})
+          .toArray()
+          .then((data) => {
+            resolve(data);
+          });
+      } catch {
+        reject();
+      }
     });
   },
   getLatestOrders: () => {
     return new Promise(async (resolve, reject) => {
-      let orders = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .find({})
-        .sort({ date: -1 })
-        .limit(4)
-        .toArray();
-      resolve(orders);
+      try {
+        let orders = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .find({})
+          .sort({ date: -1 })
+          .limit(4)
+          .toArray();
+        resolve(orders);
+      } catch {
+        reject();
+      }
     });
   },
   getOrderDetails: (orderId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.ORDER_COLLECTION)
-        .findOne({ _id: objectId(orderId) })
-        .then((data) => {
-          resolve(data);
-        });
+      try {
+        db.get()
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: objectId(orderId) })
+          .then((data) => {
+            resolve(data);
+          });
+      } catch {
+        reject();
+      }
     });
   },
   ChangeOrderStatus: (status) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.ORDER_COLLECTION)
-        .updateOne(
-          { _id: objectId(status.orderId) },
-          {
-            $set: {
-              status: status.value,
-            },
-          }
-        )
-        .then(async () => {
-          let order = await db
-            .get()
-            .collection(collection.ORDER_COLLECTION)
-            .findOne({ _id: objectId(status.orderId) });
-       
-          resolve(order);
-        });
+      try {
+        db.get()
+          .collection(collection.ORDER_COLLECTION)
+          .updateOne(
+            { _id: objectId(status.orderId) },
+            {
+              $set: {
+                status: status.value,
+              },
+            }
+          )
+          .then(async () => {
+            let order = await db
+              .get()
+              .collection(collection.ORDER_COLLECTION)
+              .findOne({ _id: objectId(status.orderId) });
+
+            resolve(order);
+          });
+      } catch {
+        reject();
+      }
     });
   },
   changePaymentStatus: (data) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.ORDER_COLLECTION)
-        .updateOne(
-          { _id: objectId(data.orderId) },
-          {
-            $set: {
-              paymentStatus: data.value,
-            },
-          }
-        )
-        .then((data) => {
-          resolve(data);
-        });
+      try {
+        db.get()
+          .collection(collection.ORDER_COLLECTION)
+          .updateOne(
+            { _id: objectId(data.orderId) },
+            {
+              $set: {
+                paymentStatus: data.value,
+              },
+            }
+          )
+          .then((data) => {
+            resolve(data);
+          });
+      } catch {
+        reject();
+      }
     });
   },
 
   getNumberOfUsers: () => {
     return new Promise(async (resolve, reject) => {
-      let usrCount = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .countDocuments();
+      try {
+        let usrCount = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .countDocuments();
 
-      resolve(usrCount);
+        resolve(usrCount);
+      } catch {
+        reject();
+      }
     });
   },
   getTotelSale: () => {
     return new Promise(async (resolve, reject) => {
-      let totel = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .aggregate([
-          {
-            $group: {
-              _id: null,
-              totel: { $sum: "$totel" },
+      try {
+        let totel = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $group: {
+                _id: null,
+                totel: { $sum: "$totel" },
+              },
             },
-          },
-        ])
-        .toArray();
+          ])
+          .toArray();
 
-      if (totel[0]) {
-        resolve(totel[0].totel);
-      } else {
-        resolve({ totel: null });
+        if (totel[0]) {
+          resolve(totel[0].totel);
+        } else {
+          resolve({ totel: null });
+        }
+      } catch {
+        reject();
       }
     });
   },
- getPendingAmt: () => {
+  getPendingAmt: () => {
     return new Promise(async (resolve, reject) => {
-      let totel = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .aggregate([
-          { $match: { status: "Pending" } },
-          {
-            $group: {
-              _id: null,
-              totel: { $sum: "$totel" },
+      try {
+        let totel = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            { $match: { status: "Pending" } },
+            {
+              $group: {
+                _id: null,
+                totel: { $sum: "$totel" },
+              },
             },
-          },
-        ])
-        .toArray();
+          ])
+          .toArray();
 
-      resolve(totel[0].totel);
+        resolve(totel[0].totel);
+      } catch {
+        reject();
+      }
     });
   },
   getPenOrder: () => {
     return new Promise(async (resolve, reject) => {
-      let penOrder = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .find({ status: "Pending" })
-        .count();
+      try {
+        let penOrder = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .find({ status: "Pending" })
+          .count();
 
-      resolve(penOrder);
+        resolve(penOrder);
+      } catch {
+        reject();
+      }
     });
   },
 };
