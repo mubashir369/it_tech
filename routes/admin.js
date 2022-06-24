@@ -18,23 +18,31 @@ router.get("/", function (req, res, next) {
 });
 router.post("/", (req, res) => {
   console.log(req.body);
-  adminHelper.adminLogin(req.body).then((response) => {
-    if (response.status) {
-      req.session.adminlogin = true;
-      req.session.admin = response.admin;
-      res.redirect("/admin/dashboard");
-    } else {
-      req.session.logErr = "Invalid Username Or Password";
-      console.log("admin log in filed");
-      res.redirect("/admin");
-    }
-  });
+  try {
+    adminHelper.adminLogin(req.body).then((response) => {
+      if (response.status) {
+        req.session.adminlogin = true;
+        req.session.admin = response.admin;
+        res.redirect("/admin/dashboard");
+      } else {
+        req.session.logErr = "Invalid Username Or Password";
+        console.log("admin log in filed");
+        res.redirect("/admin");
+      }
+    });
+  } catch {
+    res.render("user/404");
+  }
 });
 router.get("/add-product", (req, res) => {
-  if (req.session.admin) {
-    res.render("admin/add-product", { admin: true });
-  } else {
-    res.redirect("/admin");
+  try {
+    if (req.session.admin) {
+      res.render("admin/add-product", { admin: true });
+    } else {
+      res.redirect("/admin");
+    }
+  } catch {
+    res.render("user/404");
   }
 });
 
@@ -175,46 +183,84 @@ router.post("/edit-user/:id", (req, res) => {
   });
 });
 router.get("/dashboard", async (req, res) => {
-  if (req.session.admin) {
-    let dashboard = {};
-    dashboard.usrcount = await adminHelper.getNumberOfUsers();
-    dashboard.totelSale = await adminHelper.getTotelSale();
-    dashboard.penAmt = await adminHelper.getPendingAmt();
-    dashboard.penOrder = await adminHelper.getPenOrder();
-    dashboard.totelRecivedAmt = dashboard.totelSale - dashboard.penAmt;
-    dashboard.latestOrders = await adminHelper.getLatestOrders();
-    res.render("admin/dashboard", { admin: true,dashboard});
-  } else {
-    res.redirect("/admin");
+  try {
+    if (req.session.admin) {
+      let dashboard = {};
+      dashboard.usrcount = await adminHelper.getNumberOfUsers().catch(() => {
+        res.render("admin/404", { admin: true });
+      });
+      dashboard.totelSale = await adminHelper.getTotelSale().catch(() => {
+        res.render("admin/404", { admin: true });
+      });
+      dashboard.penAmt = await adminHelper.getPendingAmt().catch(() => {
+        res.render("admin/404", { admin: true });
+      });
+      dashboard.penOrder = await adminHelper.getPenOrder().catch(() => {
+        res.render("admin/404", { admin: true });
+      });
+      dashboard.totelRecivedAmt = dashboard.totelSale - dashboard.penAmt;
+      dashboard.latestOrders = await adminHelper.getLatestOrders().catch(() => {
+        res.render("admin/404", { admin: true });
+      });
+      res.render("admin/dashboard", { admin: true, dashboard });
+    } else {
+      res.redirect("/admin");
+    }
+  } catch {
+    res.render("admin/404");
   }
 });
 router.get("/view-orders", (req, res) => {
   if (req.session.admin) {
-    adminHelper.getAllOrders().then((orders) => {
-      res.render("admin/orderlist", { admin: true, orders });
-    });
+    adminHelper
+      .getAllOrders()
+      .then((orders) => {
+        res.render("admin/orderlist", { admin: true, orders });
+      })
+      .catch(() => {
+        res.render("admin/404", { admin: true });
+      });
   } else {
     res.redirect("/admin");
   }
 });
 router.get("/view-order-detailes/:id", async (req, res) => {
   if (req.session.admin) {
-    let products = await userHelper.getOrderProducts(req.params.id);
-    adminHelper.getOrderDetails(req.params.id).then((order) => {
-      res.render("admin/order-detailes", { admin: true, order, products });
-    });
+    let products = await userHelper
+      .getOrderProducts(req.params.id)
+      .catch(() => {
+        res.render("admin/404", { admin: true });
+      });
+    adminHelper
+      .getOrderDetails(req.params.id)
+      .then((order) => {
+        res.render("admin/order-detailes", { admin: true, order, products });
+      })
+      .catch(() => {
+        res.render("admin/404", { admin: true });
+      });
   } else {
     res.redirect("/admin");
   }
 });
 router.post("/changeStatus", (req, res) => {
-  adminHelper.ChangeOrderStatus(req.body).then((response) => {
-    res.json(response);
-  });
+  adminHelper
+    .ChangeOrderStatus(req.body)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch(() => {
+      res.render("admin/404", { admin: true });
+    });
 });
 router.post("/changePaymentStatus", (req, res) => {
-  adminHelper.changePaymentStatus(req.body).then((response) => {
-    res.json(response);
-  });
+  adminHelper
+    .changePaymentStatus(req.body)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch(() => {
+      res.render("admin/404", { admin: true });
+    });
 });
 module.exports = router;
