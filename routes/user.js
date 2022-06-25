@@ -169,7 +169,6 @@ router.get("/product-detailes/:id", async (req, res) => {
     .catch(() => {
       res.render("user/404");
     });
-  let id = req.params.id;
 
   res.render("user/product-detiles", {
     product,
@@ -192,11 +191,7 @@ router.get("/product-detailes/:id", async (req, res) => {
             res.render("user/404");
           });
         //let unitTotel=Object.keys(perTotel)
-        res
-          .render("user/cart", { user: req.session.user, products, totel })
-          .catch(() => {
-            res.render("user/404");
-          });
+        res.render("user/cart", { user: req.session.user, products, totel });
       } else {
         res.render("user/empty-cart");
       }
