@@ -6,6 +6,7 @@ const async = require("hbs/lib/async");
 const { ObjectId } = require("mongodb");
 const otpGenerator = Math.floor(1000 + Math.random() * 9000);
 const Razorpay = require("razorpay");
+require('dotenv')
 var instance = new Razorpay({
   key_id: "rzp_test_jUspqW6Y2QXpgt",
   key_secret: "SkbvbAXD9jYzaqaluLNZdxIk",
