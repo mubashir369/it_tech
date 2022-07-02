@@ -549,13 +549,13 @@ module.exports = {
       if (totel[0]) {
         let price={
           subTotel:totel[0].totel,
-          discount:(totel[0].totel * 5) / 100,
-          gst:(totel[0].totel * 18) / 100,
+          discount:Math.round((totel[0].totel * 5) / 100) ,
+          gst:Math.round((totel[0].totel * 18) / 100),
          
 
         }
-        //resolve(price)
-        resolve(totel[0].totel);
+        resolve(price)
+        //resolve(totel[0].totel);
       } else {
         resolve({ totel: null });
       }
@@ -621,12 +621,7 @@ module.exports = {
         var minutes = dt.getMinutes();
         var Time = hours + ":" + minutes + "-" + AmOrPm;
         today = mm + "/" + dd + "/" + yyyy;
-        let oldTotel = parseInt(order.CartTotel);
-        let discound = (order.CartTotel * 5) / 100;
-        let gst = (order.CartTotel * 18) / 100;
-        let Totel = order.CartTotel - discound + gst;
-        let roudOff = Math.round(Totel);
-        let newTotel = roudOff;
+        let orderList=new Date()
         let orderObj = {
           deliveryDetails: {
             fname: order.fname,
@@ -641,13 +636,14 @@ module.exports = {
           userId: ObjectId(order.userId),
           payment: order.payment,
           products: products,
-          totelAmound: oldTotel,
-          discound: discound,
-          gst: gst,
+          totelAmound: order.subTotel,
+          discound: order.discount,
+          gst: order.gst,
           paymentStatus: "Not Paid",
-          totel: newTotel,
+          totel: order.CartTotel,
           date: today,
           time: Time,
+          sort:orderList,
           status: status,
         };
         db.get()
@@ -680,14 +676,13 @@ module.exports = {
      }
     });
   },
-
-  getUserOrders: (usrId) => {
+getUserOrders: (usrId) => {
     return new Promise(async (resolve, reject) => {
     try{
       let orders = await db
       .get()
       .collection(collection.ORDER_COLLECTION)
-      .find({ userId: ObjectId(usrId) })
+      .find({ userId: ObjectId(usrId) }).sort({sort:-1})
       .toArray();
 
     resolve(orders);
@@ -815,7 +810,7 @@ try{
           { _id: ObjectId(orderId) },
           {
             $set: {
-              status: "Shipped",
+              
               paymentStatus: "Paid",
             },
           }

@@ -20,7 +20,10 @@
               <div class="form-group row">
 
                 <input type="text" name="userId" value="{{user._id}}" hidden>
-                <input type="text" name="CartTotel" value='{{totel}}' hidden>
+                <input type="text" name="CartTotel" value='{{totel.totel}}' hidden>
+                 <input type="text" name="subTotel" value='{{totel.subTotel}}' hidden>
+                  <input type="text" name="gst" value='{{totel.gst}}' hidden>
+                   <input type="text" name="discount" value='{{totel.discount}}' hidden>
               </div>
               <div class="form-group row">
                 <div class="col-md-12">
@@ -81,11 +84,19 @@
 
                       <tr>
                         <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                        <td class="text-black">{{totel}}</td>
+                        <td class="text-black">{{totel.subTotel}}</td>
+                      </tr>
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Discount</strong></td>
+                        <td class="text-black">{{totel.discount}}</td>
+                      </tr>
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Tax</strong></td>
+                        <td class="text-black">{{totel.gst}}</td>
                       </tr>
                       <tr>
                         <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                        <td class="text-black font-weight-bold"><strong>{{totel}}</strong></td>
+                        <td class="text-black font-weight-bold"><strong>{{totel.totel}}</strong></td>
                       </tr>
                     </tbody>
                   </table>

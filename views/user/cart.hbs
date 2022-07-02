@@ -112,15 +112,39 @@
                 </div>
               </div>
 
-              <div class="row mb-5">
+              <div class="row">
                 <div class="col-md-6">
-                  <span class="text-black"><strong> Total</strong></span>
+                  <span class="text-black"><strong>Sub Total</strong></span>
                 </div>
                 <div class="col-md-6 text-right">
-                  <strong class="text-black">₹<span id="totel">{{totel}}</span>.00 </strong>
+                  <strong class="text-black">₹<span id="subtotel">{{totel.subTotel}}</span>.00 </strong>
                 </div>
               </div>
-
+              <div class="row ">
+                <div class="col-md-6">
+                  <span class="text-black"><strong> GST 18%</strong></span>
+                </div>
+                <div class="col-md-6 text-right">
+                  <strong class="text-black">₹<span id="gst">{{totel.gst}}</span>.00 </strong>
+                </div>
+              </div>
+              
+              <div class="row ">
+                <div class="col-md-6">
+                  <span class="text-black"><strong> Discount</strong></span>
+                </div>
+                <div class="col-md-6 text-right">
+                  <strong class="text-black">₹<span id="disc">{{totel.discount}}</span>.00 </strong>
+                </div>
+              </div>
+                <div class="row ">
+                <div class="col-md-6">
+                  <span class="text-black"><strong> TOTEL</strong></span>
+                </div>
+                <div class="col-md-6 text-right">
+                  <strong class="text-black">₹<span id="totel">{{totel.totel}}</span>.00 </strong>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-md-12">
                   <form action="/place-order">
@@ -147,6 +171,7 @@
 
 <script src="javascripts/js/main.js"></script>
 <script>
+
  
   function changeQty(cartId, proId, usrId, count) {
 
@@ -172,9 +197,14 @@
           }
 
         } else {
+          
           document.getElementById(proId).value = quantity + count
+          document.getElementById('subtotel').innerHTML = +response.subtotel
+          document.getElementById('gst').innerHTML = +response.gst
+          document.getElementById('disc').innerHTML = +response.disc
           document.getElementById('totel').innerHTML = +response.totel
           document.getElementById('perTotel' + proId).innerHTML = price
+          
 
         }
       }

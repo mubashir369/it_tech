@@ -191,6 +191,7 @@ router.get("/product-detailes/:id", async (req, res) => {
             res.render("user/404");
           });
         //let unitTotel=Object.keys(perTotel)
+        totel.totel=totel.subTotel+totel.gst-totel.discount
         res.render("user/cart", { user: req.session.user, products, totel });
       } else {
         res.render("user/empty-cart");
@@ -220,8 +221,12 @@ router.post("/change-product-Qty", (req, res, next) => {
   userHelper
     .changeProductQty(req.body)
     .then(async (response) => {
-      response.totel = await userHelper.getTotelAmount(req.body.user);
+      let price= await userHelper.getTotelAmount(req.body.user);
       /*response.perTotel = await userHelper.getPerTotelAmount(req.body);*/
+      response.subtotel =price.subTotel
+      response.gst =Math.round(price.gst) 
+      response.disc=Math.round(price.discount) 
+      response.totel=price.subTotel+Math.round(price.gst)-Math.round(price.discount)
       res.json(response);
     })
     .catch(() => {
@@ -262,7 +267,7 @@ router.get("/place-order", async (req, res) => {
       .catch(() => {
         res.render("user/404");
       });
-
+      totel.totel=totel.subTotel+totel.gst-totel.discount
     res.render("user/place-order", { totel, user: req.session.user });
   } else {
     res.redirect("/login");
@@ -279,6 +284,7 @@ router.post("/place-order", async (req, res) => {
     .catch(() => {
       res.render("user/404");
     });
+    totel.totel=totel.subTotel+Math.round(totel.gst)-Math.round(totel.discount)
   userHelper
     .placeOrder(req.body, products)
     .then((orderId) => {
@@ -286,7 +292,7 @@ router.post("/place-order", async (req, res) => {
         res.json({ cod: true });
       } else {
         userHelper
-          .generateRazorpay(orderId.insertedId, totel)
+          .generateRazorpay(orderId.insertedId, totel.totel)
           .then((response) => {
             res.json(response);
           })
@@ -346,6 +352,8 @@ router.get("/user/view-order-product/:id", async (req, res) => {
     .orderData(req.params.id)
     .then((orderData) => {
       order = orderData;
+      console.log("*************************");
+      console.log(orderData);
       let status = {
         Pending: null,
         Shipped: null,
@@ -353,11 +361,14 @@ router.get("/user/view-order-product/:id", async (req, res) => {
         ReadyToShipp: null,
         payment: null,
       };
+      if(order.payment=='Online'){
+        if(order.paymentStatus=='Not Paid'){
+          status.payment=true
+        }
+      }
       if (order.status == "Pending") {
         status.Pending = true;
-        if (order.payment == "Online") {
-          status.payment = true;
-        }
+       
       } else if (order.status == "Shipped") {
         status.Shipped = true;
       } else if (order.status == "Delivered") {

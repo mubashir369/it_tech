@@ -54,7 +54,7 @@ module.exports = {
       try {
         db.get()
           .collection(collection.ORDER_COLLECTION)
-          .find({})
+          .find({}).sort({sort:-1})
           .toArray()
           .then((data) => {
             resolve(data);
