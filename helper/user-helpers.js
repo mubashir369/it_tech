@@ -547,6 +547,14 @@ module.exports = {
         ])
         .toArray();
       if (totel[0]) {
+        let price={
+          subTotel:totel[0].totel,
+          discount:(totel[0].totel * 5) / 100,
+          gst:(totel[0].totel * 18) / 100,
+         
+
+        }
+        //resolve(price)
         resolve(totel[0].totel);
       } else {
         resolve({ totel: null });
@@ -601,7 +609,7 @@ module.exports = {
       try{
 
         console.log(order, products);
-        let status = order.payment == "COD" ? "ReadyToShipp" : "Pending";
+        let status ="Pending";
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, "0");
         var mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -640,7 +648,6 @@ module.exports = {
           totel: newTotel,
           date: today,
           time: Time,
-  
           status: status,
         };
         db.get()
