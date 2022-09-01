@@ -8,8 +8,8 @@ const otpGenerator = Math.floor(1000 + Math.random() * 9000);
 const Razorpay = require("razorpay");
 require("dotenv");
 var instance = new Razorpay({
-  key_id: "rzp_test_jUspqW6Y2QXpgt",
-  key_secret: "SkbvbAXD9jYzaqaluLNZdxIk",
+  key_id: process.env.RZP_ID,
+  key_secret: process.env.RZP_KEY,
 });
 let mysession = {};
 mysession.OTP = otpGenerator;
@@ -44,8 +44,8 @@ module.exports = {
               port: 465,
               secure: true,
               auth: {
-                user: "meuse685@gmail.com",
-                pass: "rzpwououaupnbjac",
+                user: process.env.GMAIL,
+                pass: process.env.GMAIL_PASS,
               },
               tls: {
                 rejectUnauthorized: false,
@@ -53,7 +53,7 @@ module.exports = {
             });
 
             const mailDetails = {
-              from: "meuse685@gmail.com",
+              from: process.env.GMAIL,
               to: email,
               subject: "for user verification",
               text: "just random texts ",
