@@ -116,7 +116,7 @@ module.exports = {
         }
       )
       .then((response) => {
-        resolve();
+        resolve(response);
       });
      }catch{
        reject()
